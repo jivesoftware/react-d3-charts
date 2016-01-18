@@ -26,6 +26,6 @@ $ npm test --coverage
 ```
 
 #resources
-* This started out initially as a fork of [react-d3-components](https://github.com/jivesoftware/react-d3-components)
+* This started out initially as a fork of [react-d3-components](https://github.com/codesuki/react-d3-components)
 * Legend support [d3-svg-legend](https://github.com/susielu/d3-legend)
 * Color sorting provided by [sc-color](https://www.npmjs.com/package/sc-color)
