@@ -1,2 +1,4 @@
-export const BarChart = require('./lib/BarChart');
-export const LineChart = require('./lib/LineChart');
+module.exports = {
+  BarChart: require('./lib/BarChart'),
+  LineChart: require('./lib/LineChart')
+};

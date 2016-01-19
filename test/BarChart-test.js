@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import BarChart from '../lib/BarChart';
+import BarChart from '../src/BarChart';
 
 describe('<BarChart />', function() {
   const height = 100;

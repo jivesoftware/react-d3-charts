@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Chart from '../lib/Chart';
+import Chart from '../src/Chart';
 
 describe('<Chart />', function() {
   const height = 100;

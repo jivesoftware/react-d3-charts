@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Axis from '../lib/Axis';
+import Axis from '../src/Axis';
 import d3 from 'd3';
 
 describe('<Axis />', function() {

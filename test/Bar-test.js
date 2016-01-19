@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import Bar from '../lib/Bar';
+import Bar from '../src/Bar';
 
 describe('<Bar />', function() {
 

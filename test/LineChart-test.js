@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import LineChart from '../lib/LineChart';
+import LineChart from '../src/LineChart';
 
 describe('<LineChart />', function() {
   const height = 100;

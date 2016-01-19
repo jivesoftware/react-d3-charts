@@ -13,6 +13,11 @@ A D3 charting library for React
 $ npm install react-d3-charts
 ```
 
+##code layout
+The es6 source code is in the /src directory.
+The published code is transpiled to /lib directory by running the build task (see below).
+The root index.js imports code from the /lib directory allowing end-users to seamlessly use the module without requiring babel or someother transpiler.
+
 ##tasks
 
 run the tests
@@ -23,6 +28,11 @@ $ npm test
 generate test coverage report
 ```shell
 $ npm test --coverage
+```
+
+build the module for distribution
+```shell
+$ npm run build
 ```
 
 #resources

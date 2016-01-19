@@ -1,11 +1,12 @@
 {
   "name": "react-d3-charts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A D3 charting library for React",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && babel lib --out-file dist/react-d3-charts.js --source-maps",
-    "clean": "rm -rf ./dist/*",
+    "clean": "rm -rf ./lib/*",
+    "build": "npm run clean && ./node_modules/.bin/babel src --out-dir lib/",
+    "prepublish": "npm run build",
     "test": "babel-node ./node_modules/.bin/babel-istanbul test _mocha -- --recursive 'test/**/*.js'"
   },
   "repository": {

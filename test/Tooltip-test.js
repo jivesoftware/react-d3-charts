@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Tooltip from '../lib/Tooltip';
+import Tooltip from '../src/Tooltip';
 
 describe('<Tooltip />', function(){
 
