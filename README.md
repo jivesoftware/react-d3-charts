@@ -15,8 +15,8 @@ $ npm install react-d3-charts
 
 ##code layout
 The es6 source code is in the /src directory.
-The published code is transpiled to /lib directory by running the build task (see below).
-The root index.js imports code from the /lib directory allowing end-users to seamlessly use the module without requiring babel or someother transpiler.
+The published code is transpiled from /src to the /lib directory by running the build task (see below). The build task is automatically called when the module is published (see package.json -> scripts -> prepublish). 
+The root index.js imports code from the /lib directory allowing end-users to seamlessly use the module without requiring babel or some other transpiler.
 
 ##tasks
 
