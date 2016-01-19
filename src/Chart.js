@@ -95,7 +95,7 @@ const Chart = React.createClass({
         if (_.isArray(leg) && leg.length > 0){
           if (_.isArray(leg[0]) && leg[0].length > 0){
             const bb = leg[0][0].getBBox();
-            const xPos = (width/ 2) - (bb.width / 2) + margin.left;
+            const xPos = ((width + margin.left + margin.right)/ 2) - (bb.width / 2);
             const yPos = height;
             leg.attr('transform', `translate(${xPos}, ${yPos})`);
           }
