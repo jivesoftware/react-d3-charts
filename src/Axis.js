@@ -1,4 +1,5 @@
 const React = require('react');
+const _ = require('lodash');
 
 const Axis = React.createClass({
   propTypes: {
@@ -6,7 +7,8 @@ const Axis = React.createClass({
     width: React.PropTypes.number,
     tickArguments: React.PropTypes.array,
     tickValues: React.PropTypes.array,
-    tickFormat: React.PropTypes.func,
+    tickFormat: React.PropTypes.func,//format tick label text
+    tickFilter: React.PropTypes.func,//filter ticks before elements are created
     innerTickSize: React.PropTypes.number,
     tickPadding: React.PropTypes.number,
     outerTickSize: React.PropTypes.number,
@@ -133,7 +135,7 @@ const Axis = React.createClass({
       labelElement = <text className={`${className} label`} textAnchor={"end"} y={6} dy={".75em"} transform={"rotate(-90)"}>{label}</text>;
     }
 
-    const tickElements = ticks.map((tick, index) => {
+    const tickElements = _.compact(ticks.map((tick, index) => {
       const position = activeScale(tick);
       const translate = transform.replace('{}', position);
       const formatted = tickFormatter(tick);
@@ -151,6 +153,11 @@ const Axis = React.createClass({
       if (formatted.length < 1){
         tickClasses.push('hidden');
       }
+      if (_.isFunction(this.props.tickFilter)){
+        if (!this.props.tickFilter.call(scale, tick, formatted, index)){
+          return null;
+        }
+      }
       return (
           <g key={`${tick}.${index}`} className={ tickClasses.join(' ') } transform={translate}>
           <line x2={x2} y2={y2 + offset} stroke='#aaa'/>
@@ -158,7 +165,7 @@ const Axis = React.createClass({
           {tickFormatter(tick)}</text>
           </g>
           );
-    });
+    }));
 
     const pathElement = <path className='domain' d={d} fill='none' stroke='#aaa'/>;
 
