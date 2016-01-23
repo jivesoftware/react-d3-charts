@@ -15,7 +15,7 @@ $ npm install react-d3-charts
 
 ##usage
 
-*NOTE* A demo/sample app is currently in the works
+**A demo/sample app is currently in the works**
 
 In the meantime, the tests are currently the best place to start.
 Have a look at test/BarChart-test or test/LineChart-test.
