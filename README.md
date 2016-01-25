@@ -15,11 +15,14 @@ $ npm install react-d3-charts
 
 ##usage
 
-**A demo/sample app is currently in the works**
+**The demo app is currently a work in progress**
+```shell
+$ npm run demo
+$ open http://localhost:8080/webpack-dev-server/
+```
 
-In the meantime, the tests are currently the best place to start.
-Have a look at test/BarChart-test or test/LineChart-test.
-
+There also tests that you should probably look at.
+See test/BarChart-test or test/LineChart-test.
 
 ##code layout
 The es6 source code is in the /src directory.

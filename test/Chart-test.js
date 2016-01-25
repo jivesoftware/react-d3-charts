@@ -24,10 +24,13 @@ describe('<Chart />', function() {
   });
 
   it('renders a <Chart /> with a legend', function(){
-    const legend = [
-      { 'apple': '#dddddd' },
-      { 'peach': '#cdcdcd' }
-    ];
+    const legend = {
+      position: 'top',
+      data: [
+        { 'apple': '#dddddd' },
+        { 'peach': '#cdcdcd' }
+      ]
+    };
     const wrapper = render(<Chart height={ height } width={ width } margin={ margin } legend={ legend } />);
     expect(wrapper.find('g.legend')).to.have.length(1);
     expect(wrapper.find('g.cells')).to.have.length(1);
