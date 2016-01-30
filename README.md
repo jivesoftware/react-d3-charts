@@ -1,11 +1,12 @@
 # react-d3-charts
 A D3 charting library for React
 
-* Currently supports line charts and bar charts
+* Currently supports line charts and bar charts (more are coming soon)
 * ES6 support
 * Grid lines
 * Legends
-* Mocha Tests
+* Enzyme Tests
+* Demo app
 
 ##installation
 
