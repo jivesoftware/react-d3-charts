@@ -1,0 +1,65 @@
+@import "~susy/sass/susy";
+$susy: (
+    columns: 12,
+    gutters: 1/4,
+    gutter-position: 'after',
+    global-box-sizing: border-box,
+    debug: (
+        image: show,
+        color: rgba(#66b3dc, 0.25),
+        output: background,
+        toggle: top right
+    )
+);
+
+$container-style: 'fluid';
+$body-background-color: rgb(236, 236, 236);
+
+$chart-background-color: #fff;
+$chart-min-height: 320px;
+$chart-heading-font-size: 18px;
+
+
+*,
+*:before,
+*:after {
+ -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+         box-sizing: border-box;
+}
+
+body {
+  background-color: $body-background-color;
+  margin: 30px 0;
+}
+
+div.charts {
+  @include container(90%);
+}
+
+section.chart {
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  border-radius: 5px;
+  padding: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  h1 {
+    font-size: $chart-heading-font-size;
+    font-weight: 300;
+  }
+  &.last {
+    margin-right: 0;
+  }
+}
+
+section.chart {
+  min-height: $chart-min-height;
+  background-color: $chart-background-color;
+}
+
+@media (min-width: 768px){
+  section.chart{
+    @include span(6 of 12);
+  }
+}
+
