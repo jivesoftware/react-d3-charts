@@ -42,6 +42,11 @@ React.render(
       <LineChart data={chartData} height={400} width={400} margin={margin} legend={legendData} />
     </section>
 
+    <section className='chart'>
+      <h1>Line Chart (with Grid Lines)</h1>
+      <LineChart data={chartData} height={400} width={400} margin={margin} xAxis={{ gridLines: true }} yAxis={{ gridLines: true }} />
+    </section>
+
   </div>,
   document.getElementById('demo')
 );

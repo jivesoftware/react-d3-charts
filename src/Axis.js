@@ -7,8 +7,8 @@ const Axis = React.createClass({
     width: React.PropTypes.number,
     tickArguments: React.PropTypes.array,
     tickValues: React.PropTypes.array,
-    tickFormat: React.PropTypes.func,//format tick label text
-    tickFilter: React.PropTypes.func,//filter ticks before elements are created
+    tickFormat: React.PropTypes.func, //format tick label text
+    tickFilter: React.PropTypes.func, //filter ticks before elements are created
     innerTickSize: React.PropTypes.number,
     tickPadding: React.PropTypes.number,
     outerTickSize: React.PropTypes.number,
@@ -116,7 +116,7 @@ const Axis = React.createClass({
       x = 0;
       y = sign * tickSpacing;
       x2 = 0;
-      y2 = sign * innerTickSize;
+      y2 = gridLines ? (-1 * height) : (sign * innerTickSize);
       dy = sign < 0 ? '0em' : '.71em';
       textAnchor = 'middle';
       d = `M${range[0]}, ${sign * outerTickSize}V0H${range[1]}V${sign * outerTickSize}`;

@@ -81,6 +81,8 @@ const LineChart = React.createClass({
     interpolate: React.PropTypes.string,
     label: React.PropTypes.func,
     legend: React.PropTypes.object,
+    xAxis: React.PropTypes.object,
+    yAxis: React.PropTypes.object,
     margin: React.PropTypes.shape({
       top: React.PropTypes.number,
       bottom: React.PropTypes.number,

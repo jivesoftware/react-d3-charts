@@ -18,7 +18,7 @@ $body-background-color: rgb(236, 236, 236);
 $chart-background-color: #fff;
 $chart-min-height: 320px;
 $chart-heading-font-size: 18px;
-
+$chart-axis-line-color: rgba(170,170,170,0.5);
 
 *,
 *:before,
@@ -51,6 +51,16 @@ section.chart {
   }
   &.last {
     margin-right: 0;
+  }
+
+  svg {
+    .axis {
+      .tick {
+        line {
+          stroke: $chart-axis-line-color;
+        }
+      }
+    }
   }
 }
 
