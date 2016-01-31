@@ -1,6 +1,6 @@
 const React = require('react');
 const d3 = require('d3');
-const Chart = require('./Chart');
+import Chart from './Chart';
 import Axis from './Axis';
 import Bar from './Bar';
 const Tooltip = require('./Tooltip');

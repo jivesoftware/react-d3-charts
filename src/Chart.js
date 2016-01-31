@@ -1,26 +1,25 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
 import Legend from './Legend';
 import _ from 'lodash';
 
-const Chart = React.createClass({
-  propTypes: {
-    height: React.PropTypes.number.isRequired,
-    width: React.PropTypes.number.isRequired,
-    legend: React.PropTypes.object,
-    children: React.PropTypes.arrayOf(React.PropTypes.object),
-    margin: React.PropTypes.shape({
-      top: React.PropTypes.number,
-      bottom: React.PropTypes.number,
-      left: React.PropTypes.number,
-      right: React.PropTypes.number
-    }).isRequired
-  },
+class Chart extends Component {
 
-  getDefaultProps() {
-    return {
-      legend: {}
-    };
-  },
+  static propTypes = {
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    legend: PropTypes.object,
+    children: PropTypes.arrayOf(PropTypes.object),
+    margin: PropTypes.shape({
+      top: PropTypes.number,
+      bottom: PropTypes.number,
+      left: PropTypes.number,
+      right: PropTypes.number
+    }).isRequired
+  };
+
+  static defaultProps = {
+    legend: {}
+  };
 
   render() {
     const { width, height, margin, viewBox, preserveAspectRatio, children, legend} = this.props;
@@ -63,6 +62,7 @@ const Chart = React.createClass({
       </div>
     );
   }
-});
 
-module.exports = Chart;
+}
+
+export default Chart;
