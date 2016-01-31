@@ -1,22 +1,21 @@
-const React = require('react');
+import React, { PropTypes, Component } from 'react';
 
-const Tooltip = React.createClass({
-  propTypes: {
-    top: React.PropTypes.number.isRequired,
-    left: React.PropTypes.number.isRequired,
-    html: React.PropTypes.node,
-    hidden: React.PropTypes.bool,
-    translate: React.PropTypes.number
-  },
+class Tooltip extends Component {
 
-  getDefaultProps() {
-    return {
-      top: 150,
-      left: 100,
-      html: '',
-      translate: 50
-    };
-  },
+  static propTypes = {
+    top: PropTypes.number.isRequired,
+    left: PropTypes.number.isRequired,
+    html: PropTypes.node,
+    hidden: PropTypes.bool,
+    translate: PropTypes.number
+  };
+
+  static defaultProps = {
+    top: 150,
+    left: 100,
+    html: '',
+    translate: 50
+  };
 
   render() {
     const {top, left, hidden, html, translate} = this.props;
@@ -32,6 +31,7 @@ const Tooltip = React.createClass({
 
     return ( <div className='tooltip' style={style}>{html}</div> );
   }
-});
 
-module.exports = Tooltip;
+}
+
+export default Tooltip;

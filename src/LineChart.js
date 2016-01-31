@@ -1,17 +1,18 @@
-const React = require('react');
-const d3 = require('d3');
+import React, { PropTypes, Component } from 'react';
+import d3 from 'd3';
 import Chart from './Chart';
 import Axis from './Axis';
-const Path = require('./Path');
-const Tooltip = require('./Tooltip');
+import Path from './Path';
+import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 
-const DataSet = React.createClass({
-  propTypes: {
-    data: React.PropTypes.array.isRequired,
-    line: React.PropTypes.func.isRequired,
-    colorScale: React.PropTypes.func.isRequired
-  },
+class DataSet extends Component {
+
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+    line: PropTypes.func.isRequired,
+    colorScale: PropTypes.func.isRequired
+  };
 
   render() {
     const {
@@ -65,90 +66,89 @@ const DataSet = React.createClass({
         </g>
         );
   }
-});
+}
 
-const LineChart = React.createClass({
+class LineChart extends Component {
 
-  propTypes: {
-    barPadding: React.PropTypes.number,
-    colorScale: React.PropTypes.func,
-    data: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.array
+  static propTypes = {
+    barPadding: PropTypes.number,
+    colorScale: PropTypes.func,
+    data: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
     ]).isRequired,
-    defined: React.PropTypes.func,
-    height: React.PropTypes.number.isRequired,
-    interpolate: React.PropTypes.string,
-    label: React.PropTypes.func,
-    legend: React.PropTypes.object,
-    xAxis: React.PropTypes.object,
-    yAxis: React.PropTypes.object,
-    margin: React.PropTypes.shape({
-      top: React.PropTypes.number,
-      bottom: React.PropTypes.number,
-      left: React.PropTypes.number,
-      right: React.PropTypes.number
+    defined: PropTypes.func,
+    height: PropTypes.number.isRequired,
+    interpolate: PropTypes.string,
+    label: PropTypes.func,
+    legend: PropTypes.object,
+    xAxis: PropTypes.object,
+    yAxis: PropTypes.object,
+    margin: PropTypes.shape({
+      top: PropTypes.number,
+      bottom: PropTypes.number,
+      left: PropTypes.number,
+      right: PropTypes.number
     }),
-    tooltipHtml: React.PropTypes.func,
-    tooltipMode: React.PropTypes.oneOf(['mouse', 'element', 'fixed']),
-    tooltipContained: React.PropTypes.bool,
-    tooltipOffset: React.PropTypes.objectOf(React.PropTypes.number),
-    values: React.PropTypes.func,
-    width: React.PropTypes.number.isRequired,
-    x: React.PropTypes.func,
-    xScale: React.PropTypes.func,
-    y: React.PropTypes.func,
-    y0: React.PropTypes.func,
-    yScale: React.PropTypes.func
-  },
+    tooltipHtml: PropTypes.func,
+    tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipContained: PropTypes.bool,
+    tooltipOffset: PropTypes.objectOf(PropTypes.number),
+    values: PropTypes.func,
+    width: PropTypes.number.isRequired,
+    x: PropTypes.func,
+    xScale: PropTypes.func,
+    y: PropTypes.func,
+    y0: PropTypes.func,
+    yScale: PropTypes.func
+  };
 
-  getDefaultProps() {
-    return {
-      barPadding: 0.5,
-      colorScale: d3.scale.category20(),
-      data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
-      interpolate: 'linear',
-      label: stack => { return stack.label; },
-      defined: () => true,
-      margin: {top: 0, bottom: 0, left: 0, right: 0},
-      shape: 'circle',
-      shapeColor: null,
-      tooltipMode: 'mouse',
-      tooltipOffset: {top: -35, left: 0},
-      tooltipHtml: null,
-      tooltipContained: false,
-      values: stack => { return stack.values; },
-      x: e => { return e.x; },
-      xScale: null,
-      y: e => { return e.y; },
-      y0: () => { return 0; },
-      yScale: null
-    };
-  },
+  static defaultProps = {
+    barPadding: 0.5,
+    colorScale: d3.scale.category20(),
+    data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
+    interpolate: 'linear',
+    label: stack => { return stack.label; },
+    defined: () => true,
+    margin: {top: 0, bottom: 0, left: 0, right: 0},
+    shape: 'circle',
+    shapeColor: null,
+    tooltipMode: 'mouse',
+    tooltipOffset: {top: -35, left: 0},
+    tooltipHtml: null,
+    tooltipContained: false,
+    values: stack => { return stack.values; },
+    x: e => { return e.x; },
+    xScale: null,
+    y: e => { return e.y; },
+    y0: () => { return 0; },
+    yScale: null
+  };
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       tooltip: {
         hidden: true
       }
     };
-  },
+  }
 
   componentDidMount() {
     this._svg_node = React.findDOMNode(this).getElementsByTagName('svg')[0];
-  },
+  }
 
   componentWillMount() {
     helpers.calculateInner(this, this.props);
     helpers.arrayify(this, this.props);
     helpers.makeScales(this, this.props);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
     helpers.arrayify(this, nextProps);
     helpers.makeScales(this, nextProps);
-  },
+  }
 
   handleMouseMove(e, data) {
     if (!this.props.tooltipHtml) {
@@ -216,7 +216,7 @@ const LineChart = React.createClass({
         translate: translate
       }
     });
-  },
+  }
 
   handleMouseLeave(e) {
     if (!this.props.tooltipHtml) {
@@ -230,7 +230,7 @@ const LineChart = React.createClass({
         hidden: true
       }
     });
-  },
+  }
 
   /*
      The code below supports finding the data values for the line closest to the mouse cursor.
@@ -289,7 +289,7 @@ const LineChart = React.createClass({
     const xPos = xScale(valuesAtX[index].value.x);
     const yPos = yScale(valuesAtX[index].value.y);
     return [html, xPos, yPos];
-  },
+  }
 
   render() {
     const {
@@ -356,6 +356,7 @@ const LineChart = React.createClass({
         <Tooltip {...this.state.tooltip}/>
     </div>);
   }
-});
 
-module.exports = LineChart;
+}
+
+export default LineChart;

@@ -1,28 +1,28 @@
-const React = require('react');
+import React, { PropTypes, Component } from 'react';
 
-const Path = React.createClass({
-  propTypes: {
-    className: React.PropTypes.string,
-    stroke: React.PropTypes.string.isRequired,
-    strokeLinecap: React.PropTypes.string,
-    strokeWidth: React.PropTypes.string,
-    strokeDasharray: React.PropTypes.string,
-    fill: React.PropTypes.string,
-    d: React.PropTypes.string.isRequired,
-    data: React.PropTypes.array.isRequired,
-    onMouseMove: React.PropTypes.func,
-    onMouseLeave: React.PropTypes.func
-  },
+class Path extends Component {
 
-  getDefaultProps() {
-    return {
-      className: 'path',
-      fill: 'none',
-      strokeWidth: '2',
-      strokeLinecap: 'butt',
-      strokeDasharray: 'none'
-    };
-  },
+  static propTypes = {
+    className: PropTypes.string,
+    stroke: PropTypes.string.isRequired,
+    strokeLinecap: PropTypes.string,
+    strokeWidth: PropTypes.string,
+    strokeDasharray: PropTypes.string,
+    fill: PropTypes.string,
+    d: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    onMouseMove: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    style: PropTypes.object
+  };
+
+  static defaultProps = {
+    className: 'path',
+    fill: 'none',
+    strokeWidth: '2',
+    strokeLinecap: 'butt',
+    strokeDasharray: 'none'
+  };
 
   render() {
     const  {
@@ -40,20 +40,20 @@ const Path = React.createClass({
     } = this.props;
 
     return (
-        <path
-        className={className}
-        stroke={stroke}
-        strokeWidth={strokeWidth}
-        strokeLinecap={strokeLinecap}
-        strokeDasharray={strokeDasharray}
-        fill={fill}
-        d={d}
-        onMouseMove={ evt => { onMouseMove(evt, data); } }
-        onMouseLeave={  evt => { onMouseLeave(evt); } }
-        style={style}
-        />
-        );
+      <path
+      className={className}
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      strokeLinecap={strokeLinecap}
+      strokeDasharray={strokeDasharray}
+      fill={fill}
+      d={d}
+      onMouseMove={ evt => { onMouseMove(evt, data); } }
+      onMouseLeave={  evt => { onMouseLeave(evt); } }
+      style={style}
+      />
+    );
   }
-});
+}
 
-module.exports = Path;
+export default Path;

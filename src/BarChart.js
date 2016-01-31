@@ -1,25 +1,26 @@
-const React = require('react');
-const d3 = require('d3');
+import React, { PropTypes, Component } from 'react';
+import d3 from 'd3';
 import Chart from './Chart';
 import Axis from './Axis';
 import Bar from './Bar';
-const Tooltip = require('./Tooltip');
+import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 
-const DataSet = React.createClass({
-  propTypes: {
-    data: React.PropTypes.array.isRequired,
-    xScale: React.PropTypes.func.isRequired,
-    yScale: React.PropTypes.func.isRequired,
-    colorScale: React.PropTypes.func.isRequired,
-    values: React.PropTypes.func.isRequired,
-    label: React.PropTypes.func.isRequired,
-    x: React.PropTypes.func.isRequired,
-    y: React.PropTypes.func.isRequired,
-    y0: React.PropTypes.func.isRequired,
-    onMouseMove: React.PropTypes.func,
-    onMouseLeave: React.PropTypes.func
-  },
+class DataSet extends Component {
+
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+    xScale: PropTypes.func.isRequired,
+    yScale: PropTypes.func.isRequired,
+    colorScale: PropTypes.func.isRequired,
+    values: PropTypes.func.isRequired,
+    label: PropTypes.func.isRequired,
+    x: PropTypes.func.isRequired,
+    y: PropTypes.func.isRequired,
+    y0: PropTypes.func.isRequired,
+    onMouseMove: PropTypes.func,
+    onMouseLeave: PropTypes.func
+  };
 
   render() {
     const {
@@ -79,86 +80,86 @@ const DataSet = React.createClass({
         <g>{bars}</g>
         );
   }
-});
+}
 
-const BarChart = React.createClass({
-  propTypes: {
-    barPadding: React.PropTypes.number,
-    colorScale: React.PropTypes.func,
-    data: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.array
+class BarChart extends Component {
+
+  static propTypes = {
+    barPadding: PropTypes.number,
+    colorScale: PropTypes.func,
+    data: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
     ]).isRequired,
-    height: React.PropTypes.number.isRequired,
-    label: React.PropTypes.func,
-    legend: React.PropTypes.object,
-    margin: React.PropTypes.shape({
-      top: React.PropTypes.number,
-      bottom: React.PropTypes.number,
-      left: React.PropTypes.number,
-      right: React.PropTypes.number
+    height: PropTypes.number.isRequired,
+    label: PropTypes.func,
+    legend: PropTypes.object,
+    margin: PropTypes.shape({
+      top: PropTypes.number,
+      bottom: PropTypes.number,
+      left: PropTypes.number,
+      right: PropTypes.number
     }),
-    offset: React.PropTypes.string,
-    tooltipHtml: React.PropTypes.func,
-    tooltipMode: React.PropTypes.oneOf(['mouse', 'element', 'fixed']),
-    tooltipContained: React.PropTypes.bool,
-    tooltipOffset: React.PropTypes.objectOf(React.PropTypes.number),
-    values: React.PropTypes.func,
-    width: React.PropTypes.number.isRequired,
-    x: React.PropTypes.func,
-    xScale: React.PropTypes.func,
-    y: React.PropTypes.func,
-    y0: React.PropTypes.func,
-    yScale: React.PropTypes.func
-  },
+    offset: PropTypes.string,
+    tooltipHtml: PropTypes.func,
+    tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipContained: PropTypes.bool,
+    tooltipOffset: PropTypes.objectOf(PropTypes.number),
+    values: PropTypes.func,
+    width: PropTypes.number.isRequired,
+    x: PropTypes.func,
+    xScale: PropTypes.func,
+    y: PropTypes.func,
+    y0: PropTypes.func,
+    yScale: PropTypes.func
+  };
 
-  getDefaultProps() {
-    return {
-      barPadding: 0.5,
-      colorScale: d3.scale.category20(),
-      data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
-      label: stack => { return stack.label; },
-      margin: {top: 0, bottom: 0, left: 0, right: 0},
-      offset: 'zero',
-      order: 'default',
-      tooltipMode: 'mouse',
-      tooltipOffset: {top: -35, left: 0},
-      tooltipHtml: null,
-      tooltipContained: false,
-      values: stack => { return stack.values; },
-      x: e => { return e.x; },
-      xScale: null,
-      y: e => { return e.y; },
-      y0: e => { return e.y0; },
-      yScale: null
-    };
-  },
+  static defaultProps = {
+    barPadding: 0.5,
+    colorScale: d3.scale.category20(),
+    data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
+    label: stack => { return stack.label; },
+    margin: {top: 0, bottom: 0, left: 0, right: 0},
+    offset: 'zero',
+    order: 'default',
+    tooltipMode: 'mouse',
+    tooltipOffset: {top: -35, left: 0},
+    tooltipHtml: null,
+    tooltipContained: false,
+    values: stack => { return stack.values; },
+    x: e => { return e.x; },
+    xScale: null,
+    y: e => { return e.y; },
+    y0: e => { return e.y0; },
+    yScale: null
+  };
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       tooltip: {
         hidden: true
       }
     };
-  },
+  }
 
   componentDidMount() {
     this._svg_node = React.findDOMNode(this).getElementsByTagName('svg')[0];
-  },
+  }
 
   componentWillMount() {
     helpers.calculateInner(this, this.props);
     helpers.arrayify(this, this.props);
     this._stackData(this.props);
     helpers.makeScales(this, this.props);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
     helpers.arrayify(this, nextProps);
     this._stackData(nextProps);
     helpers.makeScales(this, nextProps);
-  },
+  }
 
   _stackData(props) {
     const { offset, order, x, y, values } = props;
@@ -171,10 +172,9 @@ const BarChart = React.createClass({
       .values(values);
 
     this._data = stack(this._data);
-  },
+  }
 
-
-  _tooltipHtml: function _tooltipHtml(d /*, position*/) {
+  _tooltipHtml(d /*, position*/) {
     const xScale = this._xScale;
     const yScale = this._yScale;
 
@@ -216,7 +216,7 @@ const BarChart = React.createClass({
     const html = this.props.tooltipHtml(this.props.x(d), this.props.y0(d), this.props.y(d), total, dataLabel);
 
     return [html, xPos, yPos];
-  },
+  }
 
   handleMouseMove(e, data) {
     if (!this.props.tooltipHtml) {
@@ -284,7 +284,7 @@ const BarChart = React.createClass({
         translate: translate
       }
     });
-  },
+  }
 
   handleMouseLeave(e) {
     if (!this.props.tooltipHtml) {
@@ -298,7 +298,7 @@ const BarChart = React.createClass({
         hidden: true
       }
     });
-  },
+  }
 
   render() {
     const {
@@ -354,6 +354,7 @@ const BarChart = React.createClass({
       </div>
     );
   }
-});
 
-module.exports = BarChart;
+}
+
+export default BarChart;
