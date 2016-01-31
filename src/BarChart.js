@@ -1,7 +1,7 @@
 const React = require('react');
 const d3 = require('d3');
 const Chart = require('./Chart');
-const Axis = require('./Axis');
+import Axis from './Axis';
 const Bar = require('./Bar');
 const Tooltip = require('./Tooltip');
 import * as helpers from './helpers.js';

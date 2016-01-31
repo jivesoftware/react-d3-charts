@@ -18,7 +18,7 @@ const Chart = React.createClass({
 
   getDefaultProps() {
     return {
-      legend: []
+      legend: {}
     };
   },
 

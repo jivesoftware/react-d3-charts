@@ -1,41 +1,40 @@
-const React = require('react');
-const _ = require('lodash');
+import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 
-const Axis = React.createClass({
-  propTypes: {
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    tickArguments: React.PropTypes.array,
-    tickValues: React.PropTypes.array,
-    tickFormat: React.PropTypes.func, //format tick label text
-    tickFilter: React.PropTypes.func, //filter ticks before elements are created
-    innerTickSize: React.PropTypes.number,
-    tickPadding: React.PropTypes.number,
-    outerTickSize: React.PropTypes.number,
-    scale: React.PropTypes.func.isRequired,
-    className: React.PropTypes.string,
-    zero: React.PropTypes.number,
-    orientation: React.PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
-    label: React.PropTypes.string,
-    staggerLabels: React.PropTypes.bool,
-    gridLines: React.PropTypes.bool,
-  },
+class Axis extends Component {
 
-  getDefaultProps() {
-    return {
-      tickArguments: [10],
-      tickValues: null,
-      tickFormat: null,
-      innerTickSize: 6,
-      tickPadding: 3,
-      outerTickSize: 6,
-      className: 'axis',
-      zero: 0,
-      label: '',
-      staggerLabels: false,
-      gridLines: false
-    };
-  },
+  static propTypes = {
+    height: PropTypes.number,
+    width: PropTypes.number,
+    tickArguments: PropTypes.array,
+    tickValues: PropTypes.array,
+    tickFormat: PropTypes.func, //format tick label text
+    tickFilter: PropTypes.func, //filter ticks before elements are created
+    innerTickSize: PropTypes.number,
+    tickPadding: PropTypes.number,
+    outerTickSize: PropTypes.number,
+    scale: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    zero: PropTypes.number,
+    orientation: PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
+    label: PropTypes.string,
+    staggerLabels: PropTypes.bool,
+    gridLines: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    tickArguments: [10],
+    tickValues: null,
+    tickFormat: null,
+    innerTickSize: 6,
+    tickPadding: 3,
+    outerTickSize: 6,
+    className: 'axis',
+    zero: 0,
+    label: '',
+    staggerLabels: false,
+    gridLines: false
+  };
 
   _getTranslateString() {
     const {
@@ -58,7 +57,7 @@ const Axis = React.createClass({
       return `translate(${zero === 0 ? width : zero}, 0)`;
     }
     return '';
-  },
+  }
 
   render() {
     const {
@@ -98,15 +97,15 @@ const Axis = React.createClass({
     }
 
     // TODO: is there a cleaner way? removes the 0 tick if axes are crossing
-    if (zero != height && zero != width && zero != 0) {
-      ticks = ticks.filter((element, index, array) => { return element == 0 ? false : true;});
+    if (zero !== height && zero !== width && zero !== 0) {
+      ticks = ticks.filter((element) => { return element === 0 ? false : true;});
     }
 
     const tickSpacing = Math.max(innerTickSize, 0) + tickPadding;
 
     const sign = orientation === 'top' || orientation === 'left' ? -1 : 1;
 
-    const range = this._d3_scaleRange(scale);
+    const range = this._d3ScaleRange(scale);
 
     const activeScale = scale.rangeBand ? e => { return scale(e) + scale.rangeBand() / 2; } : scale;
 
@@ -179,17 +178,17 @@ const Axis = React.createClass({
         {labelElement}
         </g>
         );
-  },
+  }
 
-  _d3_scaleExtent(domain) {
+  _d3ScaleExtent(domain) {
     const start = domain[0];
     const stop = domain[domain.length - 1];
     return start < stop ? [start, stop] : [stop, start];
-  },
-
-  _d3_scaleRange(scale) {
-    return scale.rangeExtent ? scale.rangeExtent() : this._d3_scaleExtent(scale.range());
   }
-});
 
-module.exports = Axis;
+  _d3ScaleRange(scale) {
+    return scale.rangeExtent ? scale.rangeExtent() : this._d3ScaleExtent(scale.range());
+  }
+}
+
+export default Axis;
