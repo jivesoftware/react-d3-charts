@@ -349,7 +349,7 @@ class LineChart extends Component {
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} zero={yIntercept} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} zero={xIntercept} {...yAxis} />
-          <DataSet height={innerHeight} width={innerWidth} data={data} line={line} colorScale={colorScale} values={values} label={label} onMouseMove={this.handleMouseMove} onMouseLeave={this.handleMouseLeave} {...stroke} />
+          <DataSet height={innerHeight} width={innerWidth} data={data} line={line} colorScale={colorScale} values={values} label={label} onMouseMove={this.handleMouseMove.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} {...stroke} />
           { this.props.children }
           {tooltipSymbol}
         </Chart>

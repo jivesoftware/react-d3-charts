@@ -344,8 +344,8 @@ class BarChart extends Component {
             y={y}
             y0={y0}
             x={x}
-            onMouseMove={this.handleMouseMove}
-            onMouseLeave={this.handleMouseLeave}
+            onMouseMove={this.handleMouseMove.bind(this)}
+            onMouseLeave={this.handleMouseLeave.bind(this)}
             groupedBars={groupedBars}
           />
           { this.props.children }
