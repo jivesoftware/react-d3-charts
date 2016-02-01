@@ -1,4 +1,4 @@
 module.exports = {
-  BarChart: require('./lib/BarChart'),
-  LineChart: require('./lib/LineChart')
+  BarChart: require('./lib/BarChart').default,
+  LineChart: require('./lib/LineChart').default
 };
