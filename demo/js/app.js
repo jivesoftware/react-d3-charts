@@ -1,6 +1,7 @@
 import React from 'react';
 import BarChart from '../../src/BarChart.js';
 import LineChart from '../../src/LineChart.js';
+import AreaChart from '../../src/AreaChart.js';
 import '../css/main.scss';
 
 const margin = {top: 10, bottom: 50, left: 50, right: 10};
@@ -119,6 +120,17 @@ React.render(
         margin={margin}
         xAxis={{ gridLines: true }}
         yAxis={{ gridLines: true }}
+        tooltipOffset={toolTipOffset}
+        tooltipHtml={lineToolTips} />
+    </section>
+
+    <section className='chart last'>
+      <h1>Area Chart</h1>
+      <AreaChart
+        data={lineData}
+        height={400}
+        width={400}
+        margin={margin}
         tooltipOffset={toolTipOffset}
         tooltipHtml={lineToolTips} />
     </section>

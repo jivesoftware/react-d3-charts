@@ -1,7 +1,7 @@
 # react-d3-charts
 A D3 charting library for React
 
-* Line charts and Bar charts (more are coming soon)
+* Line charts, Bar charts, and Area Chart (more are coming soon)
 * ES6 support
 * Grid lines
 * Legends
@@ -24,14 +24,14 @@ $ open http://localhost:8080/webpack-dev-server/
 ```
 
 There also tests that you should probably look at.
-See test/BarChart-test or test/LineChart-test.
+See test/*-test
 
 ##code layout
-The es6 source code is in the /src directory.  
+The es6 source code is in the /src directory.
 
-The published code is transpiled from /src to the /lib directory by running the build task (see below). 
+The published code is transpiled from /src to the /lib directory by running the build task (see below).
 
-The build task is automatically called when the module is published (see package.json -> scripts -> prepublish).  
+The build task is automatically called when the module is published (see package.json -> scripts -> prepublish).
 
 The root index.js imports code from the /lib directory allowing end-users to seamlessly use the module without requiring babel or some other transpiler.
 
