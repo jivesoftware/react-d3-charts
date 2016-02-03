@@ -303,7 +303,7 @@ class AreaChart extends Component {
     return (
       <div>
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
-          <DataSet data={data} line={line} area={area} colorScale={colorScale} stroke={stroke} label={label} values={values} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} />
+          <DataSet data={data} line={line} area={area} colorScale={colorScale} stroke={stroke} label={label} values={values} onMouseMove={this.handleMouseMove.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} />
           <Axis className={"x axis"} orientation={"bottom"} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
           <Axis className={"y axis"} orientation={"left"} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
           { this.props.children }
