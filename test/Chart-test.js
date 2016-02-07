@@ -13,6 +13,23 @@ describe('<Chart />', function() {
     right: 0
   };
 
+  function testChartWithLegend(position){
+    return function(){
+      const legend = {
+        position: position,
+        data: [
+          { 'apple': '#dddddd' },
+          { 'peach': '#cdcdcd' }
+        ]
+      };
+      const wrapper = render(<Chart height={ height } width={ width } margin={ margin } legend={ legend } />);
+      expect(wrapper.find('g.legend')).to.have.length(position === 'both' ? 2 : 1);
+      expect(wrapper.find('g.cells')).to.have.length(position === 'both' ? 2 : 1);
+      expect(wrapper.find('g.cell')).to.have.length(position === 'both' ? 4 : 2);
+      expect(wrapper.find('text.label')).to.have.length(position === 'both' ? 4 : 2);
+    };
+  }
+
   it('renders a <Chart /> component', function() {
     const wrapper = shallow(<Chart height={ height } width={ width } margin={ margin } />);
     const chart = wrapper.find('svg');
@@ -23,19 +40,8 @@ describe('<Chart />', function() {
     expect(props.width).to.equal(width);
   });
 
-  it('renders a <Chart /> with a legend', function(){
-    const legend = {
-      position: 'top',
-      data: [
-        { 'apple': '#dddddd' },
-        { 'peach': '#cdcdcd' }
-      ]
-    };
-    const wrapper = render(<Chart height={ height } width={ width } margin={ margin } legend={ legend } />);
-    expect(wrapper.find('g.legend')).to.have.length(1);
-    expect(wrapper.find('g.cells')).to.have.length(1);
-    expect(wrapper.find('g.cell')).to.have.length(2);
-    expect(wrapper.find('text.label')).to.have.length(2);
-  });
+  it('renders a <Chart /> with a top legend', testChartWithLegend('top'));
+  it('renders a <Chart /> with a bottom legend', testChartWithLegend('bottom'));
+  it('renders a <Chart /> with both legend', testChartWithLegend('both'));
 
 });
