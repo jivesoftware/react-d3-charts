@@ -15,8 +15,11 @@ describe('<LineChart />', function() {
     const props = chart.props();
     expect(props.height).to.equal(height);
     expect(props.width).to.equal(width);
+    const html = wrapper.html();
+    expect(html).to.match(/g class="x axis"/);
+    expect(html).to.match(/g class="y axis"/);
+    expect(html).to.match(/path class="line"/);
   });
-
 });
 
 
