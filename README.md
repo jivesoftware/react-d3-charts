@@ -24,7 +24,34 @@ $ open http://localhost:8080/webpack-dev-server/
 ```
 
 There also tests that you should probably look at.
-See test/*-test
+
+###tl;dr
+```
+React.render(
+  <div>
+    <BarChart data={[{
+      label: 'Fruits',
+      values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin Pie', y: 3 }]
+      }]}
+    />
+
+    <LineChart
+      data={[ {
+          label: 'Apple',
+          values: [{x: 0, y: 2}, {x: 1.3, y: 5}, {x: 3, y: 6}, {x: 3.5, y: 6.5}]
+        },
+        {
+          label: 'Peaches',
+          values: [{x: 0, y: 3}, {x: 1.3, y: 4}, {x: 3, y: 7}, {x: 3.5, y: 8}]
+        }
+      }]
+    />
+  </div>
+  , document.getElementById('container')
+)
+```
+
+
 
 ##code layout
 The es6 source code is in the /src directory.
