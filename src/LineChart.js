@@ -5,6 +5,7 @@ import Axis from './Axis';
 import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
+import _ from 'lodash';
 
 class DataSet extends Component {
 
@@ -133,6 +134,10 @@ class LineChart extends Component {
         hidden: true
       }
     };
+    if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
+         (_.isArray(this.props.data) && this.props.data.length < 1) ){
+      this.props.data = LineChart.defaultProps.data;
+    }
   }
 
   componentDidMount() {

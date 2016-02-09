@@ -27,6 +27,21 @@ describe('<LineChart />', function() {
     expect(chart).to.have.length(1);
     expect(wrapper.html()).to.contain('No data available');
   });
+
+  it('should not blow up if an empty array of data is passed to it', function(){
+    const wrapper = shallow(<LineChart height={ height } width={ width } data={[]} />);
+    const chart = wrapper.find('.chart');
+    expect(chart).to.have.length(1);
+    expect(wrapper.html()).to.contain('No data available');
+  });
+
+  it('should not blow up if an empty object of data is passed to it', function(){
+    const wrapper = shallow(<LineChart height={ height } width={ width } data={{}} />);
+    const chart = wrapper.find('.chart');
+    expect(chart).to.have.length(1);
+    expect(wrapper.html()).to.contain('No data available');
+  });
+
 });
 
 
