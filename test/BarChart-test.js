@@ -33,5 +33,12 @@ describe('<BarChart />', function() {
     expect(html).to.match(/rect class="bar"/);
   });
 
+  it('should not blow up if no data is passed to it', function(){
+    const wrapper = shallow(<BarChart height={ height } width={ width } />);
+    const chart = wrapper.find('.chart');
+    expect(chart).to.have.length(1);
+    expect(wrapper.html()).to.contain('No data available');
+  });
+
 });
 
