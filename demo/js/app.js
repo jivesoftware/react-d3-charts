@@ -127,7 +127,7 @@ React.render(
     <section className='chart last'>
       <h1>Area Chart</h1>
       <AreaChart
-        data={lineData}
+        data={lineData[0]}
         height={400}
         width={400}
         margin={margin}
