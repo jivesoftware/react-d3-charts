@@ -29,14 +29,19 @@ There also tests that you should probably look at.
 ```
 React.render(
   <div>
-    <BarChart data={[{
-      label: 'Fruits',
-      values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin Pie', y: 3 }]
-      }]}
+
+    <BarChart
+      data=[
+        {
+          label: 'Fruits',
+          values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin Pie', y: 3 }]
+        }
+      ]
     />
 
     <LineChart
-      data={[ {
+      data=[
+        {
           label: 'Apple',
           values: [{x: 0, y: 2}, {x: 1.3, y: 5}, {x: 3, y: 6}, {x: 3.5, y: 6.5}]
         },
@@ -44,10 +49,20 @@ React.render(
           label: 'Peaches',
           values: [{x: 0, y: 3}, {x: 1.3, y: 4}, {x: 3, y: 7}, {x: 3.5, y: 8}]
         }
-      }]
+      ]
     />
-  </div>
-  , document.getElementById('container')
+
+    <AreaChart
+      data=[
+        {
+          label: 'Snowmen',
+          values: [{x: 0, y: 5}, {x: 1.3, y: 6}, {x: 3, y: 7}, {x: 3.5, y: 8}]
+        }
+      ]
+    />
+
+  </div>,
+  document.getElementById('container')
 )
 ```
 
