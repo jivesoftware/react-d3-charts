@@ -104,6 +104,7 @@ class BarChart extends Component {
     offset: PropTypes.string,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipClassName: PropTypes.string,
     tooltipContained: PropTypes.bool,
     tooltipOffset: PropTypes.objectOf(PropTypes.number),
     values: PropTypes.func,
@@ -125,6 +126,7 @@ class BarChart extends Component {
     order: 'default',
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
+    tooltipClassName: null,
     tooltipHtml: null,
     tooltipContained: false,
     values: stack => { return stack.values; },
@@ -232,6 +234,7 @@ class BarChart extends Component {
 
     const {
       margin,
+      tooltipClassName,
       tooltipMode,
       tooltipOffset,
       tooltipContained
@@ -282,6 +285,7 @@ class BarChart extends Component {
 
     this.setState({
       tooltip: {
+        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,

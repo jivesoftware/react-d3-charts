@@ -7,14 +7,16 @@ class Tooltip extends Component {
     left: PropTypes.number.isRequired,
     html: PropTypes.node,
     hidden: PropTypes.bool,
-    translate: PropTypes.number
+    translate: PropTypes.number,
+    className: PropTypes.string
   };
 
   static defaultProps = {
     top: 150,
     left: 100,
     html: '',
-    translate: 50
+    translate: 50,
+    className: 'tooltip'
   };
 
   render() {
@@ -29,7 +31,7 @@ class Tooltip extends Component {
       pointerEvents: 'none'
     };
 
-    return ( <div className='tooltip' style={style}>{html}</div> );
+    return ( <div className={this.props.className} style={style}>{html}</div> );
   }
 
 }

@@ -83,6 +83,7 @@ class AreaChart extends Component {
     stroke: PropTypes.func,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipClassName: PropTypes.string,
     tooltipContained: PropTypes.bool,
     tooltipOffset: PropTypes.objectOf(PropTypes.number),
     values: PropTypes.func,
@@ -101,6 +102,11 @@ class AreaChart extends Component {
     label: stack => { return stack.label; },
     margin: {top: 0, bottom: 0, left: 0, right: 0},
     stroke: d3.scale.category20(),
+    tooltipMode: 'mouse',
+    tooltipOffset: {top: -35, left: 0},
+    tooltipClassName: null,
+    tooltipHtml: null,
+    tooltipContained: false,
     values: stack => { return stack.values; },
     x: e => { return e.x; },
     y: e => { return e.y; },
@@ -146,6 +152,7 @@ class AreaChart extends Component {
 
     const {
       margin,
+      tooltipClassName,
       tooltipMode,
       tooltipOffset,
       tooltipContained
@@ -196,6 +203,7 @@ class AreaChart extends Component {
 
     this.setState({
       tooltip: {
+        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,

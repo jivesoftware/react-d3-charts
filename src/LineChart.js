@@ -94,6 +94,7 @@ class LineChart extends Component {
     }),
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipClassName: PropTypes.string,
     tooltipContained: PropTypes.bool,
     tooltipOffset: PropTypes.objectOf(PropTypes.number),
     values: PropTypes.func,
@@ -117,6 +118,7 @@ class LineChart extends Component {
     shapeColor: null,
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
+    tooltipClassName: null,
     tooltipHtml: null,
     tooltipContained: false,
     values: stack => { return stack.values; },
@@ -167,6 +169,7 @@ class LineChart extends Component {
       margin,
       tooltipMode,
       tooltipOffset,
+      tooltipClassName,
       tooltipContained
     } = this.props;
 
@@ -215,6 +218,7 @@ class LineChart extends Component {
 
     this.setState({
       tooltip: {
+        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,
