@@ -203,7 +203,6 @@ class AreaChart extends Component {
 
     this.setState({
       tooltip: {
-        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,
@@ -322,7 +321,7 @@ class AreaChart extends Component {
           <Axis className={"y axis"} orientation={"left"} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
           { this.props.children }
         </Chart>
-        <Tooltip {...this.state.tooltip}/>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
       </div>
     );
   }

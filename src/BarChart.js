@@ -285,7 +285,6 @@ class BarChart extends Component {
 
     this.setState({
       tooltip: {
-        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,
@@ -359,7 +358,7 @@ class BarChart extends Component {
           />
           { this.props.children }
         </Chart>
-        <Tooltip {...this.state.tooltip}/>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
       </div>
     );
   }

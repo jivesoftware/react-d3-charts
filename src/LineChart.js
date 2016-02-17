@@ -169,7 +169,6 @@ class LineChart extends Component {
       margin,
       tooltipMode,
       tooltipOffset,
-      tooltipClassName,
       tooltipContained
     } = this.props;
 
@@ -218,7 +217,6 @@ class LineChart extends Component {
 
     this.setState({
       tooltip: {
-        className: tooltipClassName,
         top: top,
         left: left,
         hidden: false,
@@ -363,7 +361,7 @@ class LineChart extends Component {
           { this.props.children }
           {tooltipSymbol}
         </Chart>
-        <Tooltip {...this.state.tooltip}/>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
     </div>);
   }
 
