@@ -42,6 +42,5 @@ describe('<Chart />', function() {
 
   it('renders a <Chart /> with a top legend', testChartWithLegend('top'));
   it('renders a <Chart /> with a bottom legend', testChartWithLegend('bottom'));
-  it('renders a <Chart /> with both legend', testChartWithLegend('both'));
 
 });

@@ -18,46 +18,95 @@ class Chart extends Component {
   };
 
   static defaultProps = {
-    legend: {}
+    legend: {
+    },
+    margin: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    }
   };
+
+  constructor(props){
+    super(props);
+    this.state = {
+      legendX: props.margin.left,
+      legendY: props.margin.top + props.height
+    };
+  }
+
+  componentDidMount() {
+    this.alignLegend();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props, prevProps)){
+      this.alignLegend();
+    }
+  }
+
+  hasLegend(){
+    if (_.isPlainObject(this.props.legend)){
+      return _.isArray(this.props.legend.data) && this.props.legend.data.length > 0;
+    }
+    return false;
+  }
+
+  alignLegend() {
+    if (this.hasLegend()){
+
+      let legendX, legendY;
+
+      const chart = d3.select(this.refs.chart.getDOMNode());
+      const legend = chart.select('g.legend');
+      const bbox = legend.node().getBBox();
+      const align = _.isString(this.props.legend.align) ? this.props.legend.align : 'left';
+      const position = _.isString(this.props.legend.position) ? this.props.legend.position : 'bottom';
+
+      switch(align.toLowerCase()){
+        case 'right':
+          legendX = (this.props.width - this.props.margin.right) - bbox.width;
+          break;
+        case 'center':
+          legendX = (this.props.width / 2) - (bbox.width / 2);
+          break;
+        case 'left':
+        default:
+          legendX = this.props.margin.left;
+          break;
+      }//end switch
+
+      switch(position){
+        case 'top':
+          legendY = this.props.margin.top;
+          break;
+        case 'bottom':
+        default:
+          legendY = this.props.height;
+          break;
+      }
+      this.setState({ legendX: legendX, legendY: legendY });
+    }
+  }
 
   render() {
     const { width, height, margin, viewBox, preserveAspectRatio, children, legend} = this.props;
     let legendOffset = 0;
-    let showTopLegend = false;
-    let showBottomLegend = false;
-
-    if (_.isPlainObject(this.props.legend)){
-      if (_.isArray(this.props.legend.data) && this.props.legend.data.length > 0){
-        if (_.isString(this.props.legend.position)){
-          switch(this.props.legend.position.toLowerCase()){
-            case 'top':
-              showTopLegend = true;
-              break;
-            case 'bottom':
-              showBottomLegend = true;
-              break;
-            case 'both':
-              showTopLegend = true;
-              showBottomLegend = true;
-              break;
-            default:
-              showTopLegend = false;
-              showBottomLegend = false;
-              break;
-          }//end switch
-          if (showTopLegend || showBottomLegend){
-            legendOffset += 50;
-          }
-        }
+    let wrapLegendText = false;
+    const isTruthy = function(x){ return !/^(false|f|0|no|n|)$/i.test(x || 'false'); };
+    const hasLegend = this.hasLegend();
+    if (hasLegend){
+      legendOffset += 50;
+      if (_.isString(this.props.legend.wrapText) || _.isBoolean(this.props.legend.wrapText)){
+        wrapLegendText = isTruthy(this.props.legend.wrapText);
       }
     }
     return (
-      <div>
+      <div ref='chart'>
         <svg width={width} height={height+legendOffset} viewBox={viewBox} preserveAspectRatio={preserveAspectRatio} >
-          { showTopLegend && <Legend x={margin.left} y={margin.top} data={legend.data} /> }
           <g transform={`translate(${margin.left}, ${margin.top})`}>{children}</g>
-          { showBottomLegend && <Legend x={margin.left} y={margin.top + height} data={legend.data} /> }
+          { hasLegend && <Legend x={this.state.legendX} y={this.state.legendY} data={legend.data} wrapText={wrapLegendText} /> }
         </svg>
       </div>
     );

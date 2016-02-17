@@ -54,12 +54,14 @@ const lineData = [
 
 
 const legendData = {
-  position: 'bottom',
   data: [
     { 'apple': '#ff0000' },
     { 'peaches': '#00ff00' },
     { 'pumpkin-pie': '#0000ff' }
-  ]
+  ],
+  wrapText: true,
+  align: 'center',
+  position: 'bottom'
 };
 
 React.render(
