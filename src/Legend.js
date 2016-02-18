@@ -27,7 +27,7 @@ class Legend extends Component {
     cellTextClassName: 'label',
     symbolType: 'circle',
     symbolSize: 80,
-    symbolOffset: 10,
+    symbolOffset: 20,
     wrapText: false,
     x: 0,
     y: 0,
@@ -89,9 +89,9 @@ class Legend extends Component {
     const cells = leg.selectAll('g.cell');
     cells.attr('transform', function (d, index) {
       const cell = d3.select(this);
-      const box = cell.select('path').node().getBBox();
+      const symbolBox = cell.select('path').node().getBBox();
+      const translate = `translate(${ (symbolBox.width + symbolOffset * index) + textWidthOffset }, 0)`;
       const textWidth = cell.select('text').node().getBBox().width;
-      const translate = `translate(${ ( (box.width + symbolOffset) * index ) + textWidthOffset }, 0)`;
       textWidthOffset += textWidth;
       return translate;
     });
