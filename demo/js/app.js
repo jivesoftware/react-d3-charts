@@ -2,6 +2,7 @@ import React from 'react';
 import BarChart from '../../src/BarChart.js';
 import LineChart from '../../src/LineChart.js';
 import AreaChart from '../../src/AreaChart.js';
+import Tabs from 'react-simpletabs';
 import '../css/main.scss';
 
 const margin = {top: 10, bottom: 50, left: 50, right: 10};
@@ -65,79 +66,86 @@ const legendData = {
 };
 
 React.render(
-  <div className='charts'>
+  <Tabs>
+    <Tabs.Panel title='Bar Charts'>
+      <div className='charts'>
+        <section className='chart'>
+          <h1>Bar Chart</h1>
+          <BarChart
+            data={barData}
+            height={400}
+            width={400}
+            margin={margin}
+            tooltipHtml={barToolTips}
+            tooltipOffset={toolTipOffset}/>
+        </section>
+        <section className='chart last'>
+          <h1>Bar Chart (with Legend)</h1>
+          <BarChart
+            data={barData}
+            height={400}
+            width={400}
+            margin={margin}
+            legend={legendData}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={barToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
 
-    <section className='chart'>
-      <h1>Bar Chart</h1>
-      <BarChart
-        data={barData}
-        height={400}
-        width={400}
-        margin={margin}
-        tooltipHtml={barToolTips}
-        tooltipOffset={toolTipOffset}/>
-    </section>
+    <Tabs.Panel title='Line Charts'>
+      <div className='charts'>
+        <section className='chart'>
+          <h1>Line Chart</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+        <section className='chart last'>
+          <h1>Line Chart (with Legend)</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            legend={legendData}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+        <section className='chart'>
+          <h1>Line Chart (with Grid Lines)</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            xAxis={{ gridLines: true }}
+            yAxis={{ gridLines: true }}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
 
-    <section className='chart last'>
-      <h1>Bar Chart (with Legend)</h1>
-      <BarChart
-        data={barData}
-        height={400}
-        width={400}
-        margin={margin}
-        legend={legendData}
-        tooltipOffset={toolTipOffset}
-        tooltipHtml={barToolTips} />
-    </section>
-
-    <section className='chart'>
-      <h1>Line Chart</h1>
-      <LineChart
-        data={lineData}
-        height={400}
-        width={400}
-        margin={margin}
-        tooltipOffset={toolTipOffset}
-        tooltipHtml={lineToolTips} />
-    </section>
-
-    <section className='chart last'>
-      <h1>Line Chart (with Legend)</h1>
-      <LineChart
-        data={lineData}
-        height={400}
-        width={400}
-        margin={margin}
-        legend={legendData}
-        tooltipOffset={toolTipOffset}
-        tooltipHtml={lineToolTips} />
-    </section>
-
-    <section className='chart'>
-      <h1>Line Chart (with Grid Lines)</h1>
-      <LineChart
-        data={lineData}
-        height={400}
-        width={400}
-        margin={margin}
-        xAxis={{ gridLines: true }}
-        yAxis={{ gridLines: true }}
-        tooltipOffset={toolTipOffset}
-        tooltipHtml={lineToolTips} />
-    </section>
-
-    <section className='chart last'>
-      <h1>Area Chart</h1>
-      <AreaChart
-        data={lineData[0]}
-        height={400}
-        width={400}
-        margin={margin}
-        tooltipOffset={toolTipOffset}
-        tooltipHtml={lineToolTips} />
-    </section>
-
-  </div>,
+    <Tabs.Panel title='Area Charts'>
+      <div className='charts'>
+        <section className='chart last'>
+          <h1>Area Chart</h1>
+          <AreaChart
+            data={lineData[0]}
+            height={400}
+            width={400}
+            margin={margin}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
+  </Tabs>,
   document.getElementById('demo')
 );
 

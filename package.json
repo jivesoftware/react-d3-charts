@@ -1,6 +1,6 @@
 {
   "name": "react-d3-charts",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A D3 charting library for React",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
     "react-hot-loader": "^1.3.0",
+    "react-simpletabs": "^0.7.0",
     "sass-loader": "^3.1.2",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.0",
