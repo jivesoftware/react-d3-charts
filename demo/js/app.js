@@ -53,16 +53,19 @@ const lineData = [
   }
 ];
 
-
-const legendData = {
-  data: [
-    { 'apple': '#ff0000' },
-    { 'peaches': '#00ff00' },
-    { 'pumpkin-pie': '#0000ff' }
-  ],
-  wrapText: true,
-  align: 'center',
-  position: 'bottom'
+const legendData = function(wrapText=true, align='center', position='bottom', symbolPosition='left', symbolOffset=20) {
+  return {
+    data: [
+      { 'apple': '#ff0000' },
+      { 'peaches': '#00ff00' },
+      { 'pumpkin-pie': '#0000ff' }
+    ],
+    wrapText: wrapText,
+    align: align,
+    position: position,
+    symbolOffset: symbolOffset,
+    symbolPosition: symbolPosition
+  };
 };
 
 React.render(
@@ -86,7 +89,7 @@ React.render(
             height={400}
             width={400}
             margin={margin}
-            legend={legendData}
+            legend={legendData()}
             tooltipOffset={toolTipOffset}
             tooltipHtml={barToolTips} />
         </section>
@@ -112,7 +115,7 @@ React.render(
             height={400}
             width={400}
             margin={margin}
-            legend={legendData}
+            legend={legendData()}
             tooltipOffset={toolTipOffset}
             tooltipHtml={lineToolTips} />
         </section>
@@ -145,6 +148,45 @@ React.render(
         </section>
       </div>
     </Tabs.Panel>
+
+    <Tabs.Panel title='Legends'>
+      <div className='charts'>
+        <section className='chart'>
+          <h1>Symbols on Left</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            legend={legendData()}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+        <section className='chart last'>
+          <h1>Symbols on Top</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            legend={legendData(true, 'center', 'bottom', 'top', 10)}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+        <section className='chart'>
+          <h1>No Text Wrap</h1>
+          <LineChart
+            data={lineData}
+            height={400}
+            width={400}
+            margin={margin}
+            legend={legendData(false)}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
+
   </Tabs>,
   document.getElementById('demo')
 );
