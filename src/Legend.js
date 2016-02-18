@@ -90,7 +90,7 @@ class Legend extends Component {
     cells.attr('transform', function (d, index) {
       const cell = d3.select(this);
       const box = cell.select('path').node().getBBox();
-      const textWidth = cell.select('text').node().getComputedTextLength();
+      const textWidth = cell.select('text').node().getBBox().width;
       const translate = `translate(${ ( (box.width + symbolOffset) * index ) + textWidthOffset }, 0)`;
       textWidthOffset += textWidth;
       return translate;
