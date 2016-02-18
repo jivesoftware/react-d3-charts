@@ -13,6 +13,7 @@ class Legend extends Component {
     symbolType: PropTypes.oneOf(['circle', 'cross', 'diamond', 'square', 'triangle-down', 'triangle-up']),
     symbolSize: PropTypes.number,
     symbolOffset: PropTypes.number,
+    symbolPosition: PropTypes.string,
     wrapText: PropTypes.bool,
     x: PropTypes.number,
     y: PropTypes.number,
@@ -26,6 +27,7 @@ class Legend extends Component {
     cellClassName: 'cell',
     cellTextClassName: 'label',
     symbolType: 'circle',
+    symbolPosition: 'left',
     symbolSize: 80,
     symbolOffset: 20,
     wrapText: false,
@@ -45,6 +47,10 @@ class Legend extends Component {
   }
 
   updateLegendText() {
+    const cellClassName = this.props.cellClassName;
+    const symbolOffset = this.props.symbolOffset;
+    const symbolPosition = this.props.symbolPosition.toLowerCase();
+
     const wrapper = function(text, width){
       text.each(function(){
         const t = d3.select(this);
@@ -56,8 +62,8 @@ class Legend extends Component {
             let word;
             let lineNumber = 0;
             const lineHeight = 1.1; // ems
-            const x = '0.5em';
-            const y = '0.4em';
+            const x = (symbolPosition === 'top') ? '0' : '0.5em';
+            const y = (symbolPosition === 'top') ? '0' : '0.4em';
             const dy = 0;
             let textLen = 0;
             let tspan = t.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');
@@ -66,7 +72,9 @@ class Legend extends Component {
               tspan.text(line.join(' '));
               textLen = tspan.node().getComputedTextLength();
               if (textLen > width) {
-                line.pop();
+                if (line.length > 1){
+                  line.pop();
+                }
                 tspan.text(line.join(' '));
                 line = [word];
                 t.attr('data-wrapped', 'true');
@@ -84,14 +92,19 @@ class Legend extends Component {
       leg.selectAll('.cell text').call(wrapper, d3.scale.ordinal().domain([]).range([]).rangeBand());
     }
 
-    const symbolOffset = this.props.symbolOffset;
     let textWidthOffset = 0;
-    const cells = leg.selectAll('g.cell');
+    const cells = leg.selectAll('g.' + cellClassName);
     cells.attr('transform', function (d, index) {
       const cell = d3.select(this);
-      const symbolBox = cell.select('path').node().getBBox();
+      const symbol = cell.select('path');
+      const text = cell.select('text');
+      const symbolBox = symbol.node().getBBox();
+      const textWidth = text.node().getBBox().width;
+      if (symbolPosition === 'top'){
+        symbol.attr('transform', `translate(${ textWidth / 2 }, 0)`);
+        text.attr('transform', `translate(0, ${ symbolBox.height + symbolOffset })`);
+      }
       const translate = `translate(${ (symbolBox.width + symbolOffset * index) + textWidthOffset }, 0)`;
-      const textWidth = cell.select('text').node().getBBox().width;
       textWidthOffset += textWidth;
       return translate;
     });

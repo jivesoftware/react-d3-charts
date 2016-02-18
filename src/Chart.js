@@ -91,22 +91,23 @@ class Chart extends Component {
   }
 
   render() {
-    const { width, height, margin, viewBox, preserveAspectRatio, children, legend} = this.props;
+    const { width, height, margin, viewBox, preserveAspectRatio, children } = this.props;
+
     let legendOffset = 0;
-    let wrapLegendText = false;
-    const isTruthy = function(x){ return !/^(false|f|0|no|n|)$/i.test(x || 'false'); };
+
     const hasLegend = this.hasLegend();
+
     if (hasLegend){
       legendOffset += 50;
-      if (_.isString(this.props.legend.wrapText) || _.isBoolean(this.props.legend.wrapText)){
-        wrapLegendText = isTruthy(this.props.legend.wrapText);
-      }
     }
+
     return (
       <div ref='chart'>
         <svg width={width} height={height+legendOffset} viewBox={viewBox} preserveAspectRatio={preserveAspectRatio} >
           <g transform={`translate(${margin.left}, ${margin.top})`}>{children}</g>
-          { hasLegend && <Legend x={this.state.legendX} y={this.state.legendY} data={legend.data} wrapText={wrapLegendText} /> }
+          {
+            hasLegend && <Legend x={this.state.legendX} y={this.state.legendY} {...this.props.legend} />
+          }
         </svg>
       </div>
     );
