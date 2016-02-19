@@ -4,6 +4,7 @@ import LineChart from '../../src/LineChart.js';
 import AreaChart from '../../src/AreaChart.js';
 import Tabs from 'react-simpletabs';
 import '../css/main.scss';
+import _ from 'lodash';
 
 const margin = {top: 10, bottom: 50, left: 50, right: 10};
 
@@ -53,19 +54,22 @@ const lineData = [
   }
 ];
 
-const legendData = function(wrapText=true, align='center', position='bottom', symbolPosition='left', symbolOffset=20) {
-  return {
+const legendData = function(options) {
+  const config = _.defaults({}, options, {
+    wrapText: true,
+    align: 'center',
     data: [
       { 'apple': '#ff0000' },
       { 'peaches': '#00ff00' },
       { 'pumpkin-pie': '#0000ff' }
     ],
-    wrapText: wrapText,
-    align: align,
-    position: position,
-    symbolOffset: symbolOffset,
-    symbolPosition: symbolPosition
-  };
+    position: 'bottom',
+    symbolPosition: 'left',
+    symbolOffset: 20,
+    symbolType: 'circle'
+  });
+
+  return config;
 };
 
 React.render(
@@ -163,13 +167,13 @@ React.render(
             tooltipHtml={lineToolTips} />
         </section>
         <section className='chart last'>
-          <h1>Symbols on Top</h1>
+          <h1>Square Symbols on Top</h1>
           <LineChart
             data={lineData}
             height={400}
             width={400}
             margin={margin}
-            legend={legendData(true, 'center', 'bottom', 'top', 10)}
+            legend={legendData({ symbolPosition: 'top', symbolOffset: 10, symbolType: 'square' })}
             tooltipOffset={toolTipOffset}
             tooltipHtml={lineToolTips} />
         </section>
