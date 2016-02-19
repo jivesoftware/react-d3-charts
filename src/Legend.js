@@ -87,7 +87,7 @@ class Legend extends Component {
       });
     };
 
-    const leg = d3.select(this.refs.legend.getDOMNode());
+    const leg = d3.select(this.refs.legend);
     if (this.props.wrapText){
       leg.selectAll('.cell text').call(wrapper, d3.scale.ordinal().domain([]).range([]).rangeBand());
     }

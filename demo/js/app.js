@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import BarChart from '../../src/BarChart.js';
 import LineChart from '../../src/LineChart.js';
 import AreaChart from '../../src/AreaChart.js';
@@ -25,6 +26,18 @@ const barToolTips = function(x, y0, y, total, dataLabel){
 };
 
 const lineToolTips = function(label, value){
+  return (
+    <div className='tip'>
+      <dl>
+        <dt>label</dt>
+        <dd>{ label }</dd>
+        <dt>value</dt>
+        <dd>{value.x}, {value.y}</dd>
+      </dl>
+    </div> );
+};
+
+const areaToolTips = function(label, value){
   return (
     <div className='tip'>
       <dl>
@@ -72,7 +85,7 @@ const legendData = function(options) {
   return config;
 };
 
-React.render(
+ReactDOM.render(
   <Tabs>
     <Tabs.Panel title='Bar Charts'>
       <div className='charts'>
@@ -148,7 +161,7 @@ React.render(
             width={400}
             margin={margin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={lineToolTips} />
+            tooltipHtml={areaToolTips} />
         </section>
       </div>
     </Tabs.Panel>

@@ -58,7 +58,7 @@ class Chart extends Component {
 
       let legendX, legendY;
 
-      const chart = d3.select(this.refs.chart.getDOMNode());
+      const chart = d3.select(this.refs.chart);
       const legend = chart.select('g.legend');
       const bbox = legend.node().getBBox();
       const align = _.isString(this.props.legend.align) ? this.props.legend.align : 'left';

@@ -6,6 +6,8 @@ import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
+import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 
 class DataSet extends Component {
 
@@ -56,7 +58,7 @@ class DataSet extends Component {
        The <rect> below is needed in case we want to show the tooltip no matter where on the chart the mouse is.
        Not sure if this should be used.
        */
-    const rect = React.renderToString(<rect width={width} height={height}/>);
+    const rect = ReactDOMServer.renderToString(<rect width={width} height={height}/>);
     return (
         <g>
         <g dangerouslySetInnerHTML={{__html: `<defs><clipPath id="lineClip_${sizeId}">${rect}`}}/>
@@ -136,14 +138,14 @@ class LineChart extends Component {
         hidden: true
       }
     };
-    if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
-         (_.isArray(this.props.data) && this.props.data.length < 1) ){
-      this.props.data = LineChart.defaultProps.data;
-    }
+    //if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
+         //(_.isArray(this.props.data) && this.props.data.length < 1) ){
+      //this.props.data = LineChart.defaultProps.data;
+    //}
   }
 
   componentDidMount() {
-    this._svg_node = React.findDOMNode(this).getElementsByTagName('svg')[0];
+    this._svg_node = ReactDOM.findDOMNode(this).getElementsByTagName('svg')[0];
   }
 
   componentWillMount() {

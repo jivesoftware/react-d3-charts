@@ -6,6 +6,8 @@ import Bar from './Bar';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
+import ReactDOM from 'react-dom';
+
 
 class DataSet extends Component {
 
@@ -144,14 +146,14 @@ class BarChart extends Component {
         hidden: true
       }
     };
-    if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
-         (_.isArray(this.props.data) && this.props.data.length < 1) ){
-      this.props.data = BarChart.defaultProps.data;
-    }
+    //if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
+         //(_.isArray(this.props.data) && this.props.data.length < 1) ){
+      //this.props.data = BarChart.defaultProps.data;
+    //}
   }
 
   componentDidMount() {
-    this._svg_node = React.findDOMNode(this).getElementsByTagName('svg')[0];
+    this._svg_node = ReactDOM.findDOMNode(this).getElementsByTagName('svg')[0];
   }
 
   componentWillMount() {
