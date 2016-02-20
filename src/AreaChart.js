@@ -6,7 +6,7 @@ import Axis from './Axis';
 import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-import _ from 'lodash';
+//import _ from 'lodash';
 
 class DataSet extends Component {
 
@@ -16,6 +16,8 @@ class DataSet extends Component {
     label: PropTypes.func,
     line: PropTypes.func.isRequired,
     colorScale: PropTypes.func.isRequired,
+    onMouseMove: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     stroke: PropTypes.func.isRequired,
     values: PropTypes.func
   };
@@ -66,6 +68,7 @@ class DataSet extends Component {
 class AreaChart extends Component {
 
   static propTypes = {
+    children: PropTypes.arrayOf(PropTypes.object),
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
       PropTypes.object,
@@ -121,11 +124,6 @@ class AreaChart extends Component {
         hidden: true
       }
     };
-
-    //if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
-         //(_.isArray(this.props.data) && this.props.data.length < 1) ){
-      //this.props.data = AreaChart.defaultProps.data;
-    //}
   }
 
   componentDidMount() {
@@ -153,7 +151,6 @@ class AreaChart extends Component {
 
     const {
       margin,
-      tooltipClassName,
       tooltipMode,
       tooltipOffset,
       tooltipContained
@@ -291,16 +288,16 @@ class AreaChart extends Component {
       innerHeight,
       xScale,
       yScale,
-      xIntercept,
-      yIntercept
+      //xIntercept,
+      //yIntercept
     ] = [
       this._data,
       this._innerWidth,
       this._innerHeight,
       this._xScale,
       this._yScale,
-      this._xIntercept,
-      this._yIntercept
+      //this._xIntercept,
+      //this._yIntercept
     ];
 
     const line = d3.svg.line()

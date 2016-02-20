@@ -33,21 +33,21 @@ describe('<AreaChart />', function() {
     expect(html).to.match(/line x2=/);
   });
 
-  xit('should not blow up if no data is passed to it', function(){
+  it('should not blow up if no data is passed to it', function(){
     const wrapper = shallow(<AreaChart height={ height } width={ width } />);
     const chart = wrapper.find('.chart');
     expect(chart).to.have.length(1);
     expect(wrapper.html()).to.contain('No data available');
   });
 
-  xit('should not blow up if an empty array of data is passed to it', function(){
+  it('should not blow up if an empty array of data is passed to it', function(){
     const wrapper = shallow(<AreaChart height={ height } width={ width } data={[]} />);
     const chart = wrapper.find('.chart');
     expect(chart).to.have.length(1);
     expect(wrapper.html()).to.contain('No data available');
   });
 
-  xit('should not blow up if an empty object of data is passed to it', function(){
+  it('should not blow up if an empty object of data is passed to it', function(){
     const wrapper = shallow(<AreaChart height={ height } width={ width } data={{}} />);
     const chart = wrapper.find('.chart');
     expect(chart).to.have.length(1);

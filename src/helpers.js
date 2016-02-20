@@ -8,7 +8,9 @@ export function calculateInner(component, props) {
 }
 
 export function arrayify(component, props) {
-  if (props.data === null) {
+  const isEmptyObject = _.isPlainObject(props.data) && _.keys(props.data).length < 1;
+  const isEmptyArray = _.isArray(props.data) && props.data.length < 1;
+  if (props.data === null || isEmptyObject || isEmptyArray) {
     component._data = [{
       label: 'No data available',
       values: [{x: 'No data available', y: 1}]

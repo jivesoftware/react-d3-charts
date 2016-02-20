@@ -5,7 +5,7 @@ import Axis from './Axis';
 import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-import _ from 'lodash';
+//import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
@@ -13,9 +13,12 @@ class DataSet extends Component {
 
   static propTypes = {
     data: PropTypes.array.isRequired,
-    line: PropTypes.func.isRequired,
     colorScale: PropTypes.func.isRequired,
-    label: PropTypes.func.isRequired
+    label: PropTypes.func.isRequired,
+    line: PropTypes.func.isRequired,
+    onMouseMove: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    values: PropTypes.func
   };
 
   render() {
@@ -76,6 +79,7 @@ class LineChart extends Component {
 
   static propTypes = {
     barPadding: PropTypes.number,
+    children: PropTypes.arrayOf(PropTypes.object),
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
       PropTypes.object,
@@ -138,10 +142,6 @@ class LineChart extends Component {
         hidden: true
       }
     };
-    //if ( (_.isPlainObject(this.props.data) && _.keys(this.props.data).length < 1) ||
-         //(_.isArray(this.props.data) && this.props.data.length < 1) ){
-      //this.props.data = LineChart.defaultProps.data;
-    //}
   }
 
   componentDidMount() {
