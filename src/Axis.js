@@ -20,6 +20,7 @@ class Axis extends Component {
     label: PropTypes.string,
     staggerLabels: PropTypes.bool,
     gridLines: PropTypes.bool,
+    visible: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -33,7 +34,8 @@ class Axis extends Component {
     zero: 0,
     label: '',
     staggerLabels: false,
-    gridLines: false
+    gridLines: false,
+    visible: true
   };
 
   _getTranslateString() {
@@ -75,8 +77,13 @@ class Axis extends Component {
       zero,
       label,
       staggerLabels,
-      gridLines
+      gridLines,
+      visible
     } = this.props;
+
+    if (!visible) {
+      return <g></g>;
+    }
 
     let ticks;
 

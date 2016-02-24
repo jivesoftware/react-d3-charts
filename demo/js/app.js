@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import BarChart from '../../src/BarChart.js';
 import LineChart from '../../src/LineChart.js';
+import SparklineChart from '../../src/SparklineChart.js';
 import AreaChart from '../../src/AreaChart.js';
 import Tabs from 'react-simpletabs';
 import '../css/main.scss';
@@ -64,6 +65,17 @@ const lineData = [
   {
     label: 'Peaches',
     values: [{x: 0, y: 3}, {x: 1.3, y: 4}, {x: 3, y: 7}, {x: 3.5, y: 8}, {x: 4, y: 7}, {x: 4.5, y: 7}, {x: 5, y: 7.8}, {x: 5.5, y: 9}]
+  }
+];
+
+const sparkLineData = [
+  {
+    label: 'Chickens',
+    values: [{x: 0, y: 2}, {x: 1.3, y: 5}, {x: 3, y: 6}, {x: 3.5, y: 6.5}, {x: 4, y: 6}, {x: 4.5, y: 6}, {x: 5, y: 7}, {x: 5.5, y: 8}]
+  },
+  {
+    label: 'Cows',
+    values: [{x: 0, y: 0}, {x: 1.3, y: 20}, {x: 3, y: 7}, {x: 3.5, y: 10}, {x: 4, y: 0}, {x: 4.5, y: 20}, {x: 5, y: 17.8}, {x: 5.5, y: 9}]
   }
 ];
 
@@ -162,6 +174,31 @@ ReactDOM.render(
             margin={margin}
             tooltipOffset={toolTipOffset}
             tooltipHtml={areaToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
+
+    <Tabs.Panel title='Sparkline Charts'>
+      <div className='charts'>
+        <section className='spark chart'>
+          <h1>Sparkline Chart</h1>
+          <SparklineChart
+            data={sparkLineData[0]}
+            height={50}
+            width={200}
+            margin={{top: 10, bottom: 10, left: 10, right: 10}}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
+        </section>
+        <section className='spark chart last'>
+          <h1>Sparkline Chart</h1>
+          <SparklineChart
+            data={sparkLineData[1]}
+            height={50}
+            width={200}
+            margin={{top: 10, bottom: 10, left: 10, right: 10}}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={lineToolTips} />
         </section>
       </div>
     </Tabs.Panel>

@@ -1,7 +1,7 @@
 # react-d3-charts
 A D3 charting library for React
 
-* Line charts, Bar charts, and Area Chart (more are coming soon)
+* Line charts, Bar charts, Sparkline Charts, and Area Charts (more are coming soon)
 * ES6 support
 * Grid lines
 * Legends
@@ -61,6 +61,14 @@ React.render(
       ]
     />
 
+    <SparklineChart
+      data=[
+        {
+          label: 'Stocks',
+          values: [{x: 0, y: 20}, {x: 1.3, y: 15}, {x: 3, y: 60}, {x: 3.5, y: 45}]
+        }
+      ]
+    />
   </div>,
   document.getElementById('container')
 )
