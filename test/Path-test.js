@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Path from '../src/Path';
-import d3 from 'd3';
+import d3 from 'd3/d3.min.js';
 
 describe('<Path />', function() {
 

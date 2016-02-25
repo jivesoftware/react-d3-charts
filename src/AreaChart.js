@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
-import d3 from 'd3';
+import d3 from 'd3/d3.min.js';
 import Chart from './Chart';
 import Axis from './Axis';
 import Path from './Path';

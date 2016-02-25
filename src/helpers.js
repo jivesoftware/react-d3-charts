@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import d3 from 'd3';
+import d3 from 'd3/d3.min.js';
 
 export function calculateInner(component, props) {
   const { height, width, margin } = props;

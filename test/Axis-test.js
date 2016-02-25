@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import Axis from '../src/Axis';
-import d3 from 'd3';
+import d3 from 'd3/d3.min.js';
 import sinon from 'sinon';
 
 describe('<Axis />', function() {
