@@ -46,7 +46,8 @@ export function makeLinearXScale(component, props) {
 }
 
 export function makeOrdinalXScale(component, props) {
-  const { x, values, barPadding } = props;
+  const { x, values } = props;
+  const barPadding = _.isNumber(props.barPadding) ? props.barPadding : 0.5;
   const [ data, innerWidth ] = [component._data, component._innerWidth];
   let scale;
 

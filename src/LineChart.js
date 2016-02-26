@@ -78,7 +78,6 @@ class DataSet extends Component {
 class LineChart extends Component {
 
   static propTypes = {
-    barPadding: PropTypes.number,
     children: PropTypes.arrayOf(PropTypes.object),
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
@@ -113,7 +112,6 @@ class LineChart extends Component {
   };
 
   static defaultProps = {
-    barPadding: 0.5,
     colorScale: d3.scale.category20(),
     data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
     interpolate: 'linear',
@@ -248,7 +246,7 @@ class LineChart extends Component {
      For now I don't want to use this method.
      */
   _tooltipHtml(data, position) {
-    const { x, y0, y, values, label } = this.props;
+    const { x, y, values, label } = this.props;
     const [xScale, yScale] = [this._xScale, this._yScale];
 
     const xValueCursor = xScale.invert(position[0]);

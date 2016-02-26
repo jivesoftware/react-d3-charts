@@ -234,7 +234,7 @@ ReactDOM.render(
             height={400}
             width={400}
             margin={margin}
-            legend={legendData(false)}
+            legend={legendData({ wrapText: false })}
             tooltipOffset={toolTipOffset}
             tooltipHtml={lineToolTips} />
         </section>
