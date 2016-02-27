@@ -8,63 +8,6 @@ import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 //import _ from 'lodash';
 
-class DataSet extends Component {
-
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    area: PropTypes.func.isRequired,
-    label: PropTypes.func,
-    line: PropTypes.func.isRequired,
-    colorScale: PropTypes.func.isRequired,
-    onMouseMove: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    stroke: PropTypes.func.isRequired,
-    values: PropTypes.func
-  };
-
-  render() {
-    const {
-      data,
-      area,
-      line,
-      colorScale,
-      stroke,
-      values,
-      label,
-      onMouseMove,
-      onMouseLeave
-    } = this.props;
-
-    const areas = data.map((stack, index) => {
-      return (
-          <Path
-          key={`${label(stack)}.${index}`}
-          className='area'
-          stroke='none'
-          fill={colorScale(label(stack))}
-          d={area(values(stack))}
-          onMouseMove={onMouseMove}
-          onMouseLeave={onMouseLeave}
-          data={data}
-          />
-          );
-    });
-
-    data.map(stack => {
-      return (
-          <Path
-          className='line'
-          d={line(values(stack))}
-          stroke={stroke(label(stack))}
-          data={data}
-          />
-          );
-    });
-
-    return (<g>{areas}</g>);
-  }
-}
-
 class AreaChart extends Component {
 
   static propTypes = {
@@ -272,7 +215,6 @@ class AreaChart extends Component {
       colorScale,
       interpolate,
       stroke,
-      offset,
       values,
       label,
       x,
@@ -311,10 +253,36 @@ class AreaChart extends Component {
       .y1(function(e) { return yScale(y0(e) + y(e)); })
       .interpolate(interpolate);
 
+    const areas = data.map((stack, index) => {
+      return (
+          <Path
+          key={`${label(stack)}.${index}`}
+          className='area'
+          stroke='none'
+          fill={colorScale(label(stack))}
+          d={area(values(stack))}
+          onMouseMove={this.handleMouseMove.bind(this)}
+          onMouseLeave={this.handleMouseLeave.bind(this)}
+          data={data}
+          />
+          );
+    });
+
+    data.map(stack => {
+      return (
+          <Path
+          className='line'
+          d={line(values(stack))}
+          stroke={stroke(label(stack))}
+          data={data}
+          />
+          );
+    });
+
     return (
       <div>
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
-          <DataSet data={data} line={line} area={area} colorScale={colorScale} stroke={stroke} label={label} values={values} onMouseMove={this.handleMouseMove.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} />
+          <g>{areas}</g>
           <Axis className={"x axis"} orientation={"bottom"} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
           <Axis className={"y axis"} orientation={"left"} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
           { this.props.children }
