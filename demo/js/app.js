@@ -8,6 +8,7 @@ import Tabs from 'react-simpletabs';
 import '../css/main.scss';
 import _ from 'lodash';
 
+const colorScale= d3.scale.category20();
 const margin = {top: 10, bottom: 50, left: 50, right: 10};
 
 const barToolTips = function(x, y0, y, total, dataLabel){
@@ -104,6 +105,7 @@ ReactDOM.render(
         <section className='chart'>
           <h1>Bar Chart</h1>
           <BarChart
+            colorScale={colorScale}
             data={barData}
             height={400}
             width={400}
@@ -114,6 +116,7 @@ ReactDOM.render(
         <section className='chart last'>
           <h1>Bar Chart (with Legend)</h1>
           <BarChart
+            colorScale={colorScale}
             data={barData}
             height={400}
             width={400}
@@ -130,6 +133,7 @@ ReactDOM.render(
         <section className='chart'>
           <h1>Line Chart</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
@@ -140,6 +144,7 @@ ReactDOM.render(
         <section className='chart last'>
           <h1>Line Chart (with Legend)</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
@@ -151,6 +156,7 @@ ReactDOM.render(
         <section className='chart'>
           <h1>Line Chart (with Grid Lines)</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
@@ -168,6 +174,7 @@ ReactDOM.render(
         <section className='chart last'>
           <h1>Area Chart</h1>
           <AreaChart
+            colorScale={colorScale}
             data={lineData[0]}
             height={400}
             width={400}
@@ -183,6 +190,7 @@ ReactDOM.render(
         <section className='spark chart'>
           <h1>Sparkline Chart</h1>
           <SparklineChart
+            colorScale={colorScale}
             data={sparkLineData[0]}
             height={50}
             width={200}
@@ -193,6 +201,7 @@ ReactDOM.render(
         <section className='spark chart last'>
           <h1>Sparkline Chart</h1>
           <SparklineChart
+            colorScale={colorScale}
             data={sparkLineData[1]}
             height={50}
             width={200}
@@ -208,6 +217,7 @@ ReactDOM.render(
         <section className='chart'>
           <h1>Symbols on Left</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
@@ -219,6 +229,7 @@ ReactDOM.render(
         <section className='chart last'>
           <h1>Square Symbols on Top</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
@@ -230,6 +241,7 @@ ReactDOM.render(
         <section className='chart'>
           <h1>No Text Wrap</h1>
           <LineChart
+            colorScale={colorScale}
             data={lineData}
             height={400}
             width={400}
