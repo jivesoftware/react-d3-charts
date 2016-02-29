@@ -5,7 +5,6 @@ import Axis from './Axis';
 import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-//import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
@@ -295,7 +294,7 @@ class LineChart extends Component {
 
     const sizeId = innerWidth + 'x' + innerHeight;
 
-    const lines = _.map(data, function(stack, index){
+    const lines = data.map(function(stack, index){
       return (
         <Path
         key={`${label(stack)}.${index}`}
