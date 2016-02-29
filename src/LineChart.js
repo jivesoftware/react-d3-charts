@@ -9,72 +9,6 @@ import * as helpers from './helpers.js';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
-class DataSet extends Component {
-
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    colorScale: PropTypes.func.isRequired,
-    label: PropTypes.func.isRequired,
-    line: PropTypes.func.isRequired,
-    onMouseMove: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    values: PropTypes.func
-  };
-
-  render() {
-    const {
-      width,
-      height,
-      data,
-      line,
-      strokeWidth,
-      strokeLinecap,
-      strokeDasharray,
-      colorScale,
-      values,
-      label,
-      onMouseMove,
-      onMouseLeave
-    } = this.props;
-
-    const sizeId = width + 'x' + height;
-
-    const lines = data.map((stack, index) => {
-      return (
-          <Path
-          key={`${label(stack)}.${index}`}
-          className={'line'}
-          d={line(values(stack))}
-          stroke={colorScale(label(stack))}
-          strokeWidth={typeof strokeWidth === 'function' ? strokeWidth(label(stack)) : strokeWidth}
-          strokeLinecap={typeof strokeLinecap === 'function' ? strokeLinecap(label(stack)) : strokeLinecap}
-          strokeDasharray={typeof strokeDasharray === 'function' ? strokeDasharray(label(stack)) : strokeDasharray}
-          data={values(stack)}
-          onMouseMove={onMouseMove}
-          onMouseLeave={onMouseLeave}
-          style={{clipPath: `url(#lineClip_${sizeId})`}}
-          />
-          );
-    });
-
-    /*
-       The <rect> below is needed in case we want to show the tooltip no matter where on the chart the mouse is.
-       Not sure if this should be used.
-       */
-    const rect = ReactDOMServer.renderToString(<rect width={width} height={height}/>);
-    return (
-        <g>
-        <g dangerouslySetInnerHTML={{__html: `<defs><clipPath id="lineClip_${sizeId}">${rect}`}}/>
-        {lines}
-        <rect width={width} height={height} fill={'none'} stroke={'none'} style={{pointerEvents: 'all'}}
-        onMouseMove={ evt => { onMouseMove(evt, data); } }
-        onMouseLeave={  evt => { onMouseLeave(evt); } }
-        />
-        </g>
-        );
-  }
-}
-
 class LineChart extends Component {
 
   static propTypes = {
@@ -97,6 +31,7 @@ class LineChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
+    stroke: PropTypes.object,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
     tooltipClassName: PropTypes.string,
@@ -120,6 +55,7 @@ class LineChart extends Component {
     margin: {top: 0, bottom: 0, left: 0, right: 0},
     shape: 'circle',
     shapeColor: null,
+    stroke: {},
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
     tooltipClassName: null,
@@ -246,6 +182,7 @@ class LineChart extends Component {
      For now I don't want to use this method.
      */
   _tooltipHtml(data, position) {
+
     const { x, y, values, label } = this.props;
     const [xScale, yScale] = [this._xScale, this._yScale];
 
@@ -253,7 +190,8 @@ class LineChart extends Component {
     const yValueCursor = yScale.invert(position[1]);
 
     const xBisector = d3.bisector(e => { return x(e); }).left;
-    const valuesAtX = data.map(stack => {
+
+    const valuesAtX = data.map(function(stack) {
       const idx = xBisector(values(stack), xValueCursor);
 
       const indexRight = idx === values(stack).length ? idx - 1 : idx;
@@ -337,6 +275,9 @@ class LineChart extends Component {
       this._yIntercept
     ];
 
+    const handleMouseMove = this.handleMouseMove.bind(this);
+    const handleMouseLeave = this.handleMouseLeave.bind(this);
+
     const line = d3.svg.line()
       .x(function(e) { return xScale(x(e)); })
       .y(function(e) { return yScale(y(e)); })
@@ -349,15 +290,42 @@ class LineChart extends Component {
       const symbolColor = shapeColor ? shapeColor : colorScale(this._tooltipData.label);
 
       const translate = this._tooltipData ? `translate(${xScale(x(this._tooltipData.value))}, ${yScale(y(this._tooltipData.value))})` : '';
-      tooltipSymbol = this.state.tooltip.hidden ? null : <path className='dot' d={symbol()} transform={translate} fill={symbolColor} onMouseMove={evt => { this.handleMouseMove(evt, data); }} onMouseLeave={evt => { this.handleMouseLeave(evt); }} />;
+      tooltipSymbol = this.state.tooltip.hidden ? null : <path className='dot' d={symbol()} transform={translate} fill={symbolColor} onMouseMove={ function(evt) { handleMouseMove(evt, data); } } onMouseLeave={handleMouseLeave} />;
     }
+
+    const sizeId = innerWidth + 'x' + innerHeight;
+
+    const lines = _.map(data, function(stack, index){
+      return (
+        <Path
+        key={`${label(stack)}.${index}`}
+        className={'line'}
+        d={line(values(stack))}
+        stroke={colorScale(label(stack))}
+        strokeWidth={typeof stroke.strokeWidth === 'function' ? stroke.strokeWidth(label(stack)) : stroke.strokeWidth}
+        strokeLinecap={typeof stroke.strokeLinecap === 'function' ? stroke.strokeLinecap(label(stack)) : stroke.strokeLinecap}
+        strokeDasharray={typeof stroke.strokeDasharray === 'function' ? stroke.strokeDasharray(label(stack)) : stroke.strokeDasharray}
+        data={values(stack)}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{clipPath: `url(#lineClip_${sizeId})`}}
+        />
+      );
+    });
+
+    //The <rect> below is needed in case we want to show the tooltip no matter where on the chart the mouse is.  Not sure if this should be used.
+    const rect = ReactDOMServer.renderToString(<rect width={innerWidth} height={innerHeight}/>);
 
     return (
       <div>
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} zero={yIntercept} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} zero={xIntercept} {...yAxis} />
-          <DataSet height={innerHeight} width={innerWidth} data={data} line={line} colorScale={colorScale} values={values} label={label} onMouseMove={this.handleMouseMove.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} {...stroke} />
+          <g>
+            <g dangerouslySetInnerHTML={{__html: `<defs><clipPath id="lineClip_${sizeId}">${rect}`}}/>
+            {lines}
+            <rect width={innerWidth} height={innerHeight} fill={'none'} stroke={'none'} style={{pointerEvents: 'all'}} onMouseMove={ function(evt){ handleMouseMove(evt, data); } } onMouseLeave={ handleMouseLeave } />
+          </g>
           { this.props.children }
           {tooltipSymbol}
         </Chart>
