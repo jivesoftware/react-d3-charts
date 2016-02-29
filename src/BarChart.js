@@ -8,83 +8,6 @@ import * as helpers from './helpers.js';
 //import _ from 'lodash';
 import ReactDOM from 'react-dom';
 
-
-class DataSet extends Component {
-
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    xScale: PropTypes.func.isRequired,
-    yScale: PropTypes.func.isRequired,
-    colorScale: PropTypes.func.isRequired,
-    values: PropTypes.func.isRequired,
-    label: PropTypes.func.isRequired,
-    x: PropTypes.func.isRequired,
-    y: PropTypes.func.isRequired,
-    y0: PropTypes.func.isRequired,
-    onMouseMove: PropTypes.func,
-    onMouseLeave: PropTypes.func
-  };
-
-  render() {
-    const {
-      data,
-      xScale,
-      yScale,
-      colorScale,
-      values,
-      label,
-      x,
-      y,
-      y0,
-      onMouseMove,
-      onMouseLeave,
-      groupedBars} = this.props;
-
-    let bars;
-    if (groupedBars) {
-      bars = data.map((stack, serieIndex) => {
-        return values(stack).map((e, index) => {
-          return (
-              <Bar
-              key={`${label(stack)}.${index}`}
-              width={xScale.rangeBand() / data.length}
-              height={yScale(yScale.domain()[0]) - yScale(y(e))}
-              x={xScale(x(e)) + ((xScale.rangeBand() * serieIndex) / data.length)}
-              y={yScale(y(e))}
-              fill={colorScale(label(stack))}
-              data={e}
-              onMouseMove={onMouseMove}
-              onMouseLeave={onMouseLeave}
-              />
-              );
-        });
-      });
-    } else {
-      bars = data.map(stack => {
-        return values(stack).map((e, index) => {
-          return (
-              <Bar
-              key={`${label(stack)}.${index}`}
-              width={xScale.rangeBand()}
-              height={yScale(yScale.domain()[0]) - yScale(y(e))}
-              x={xScale(x(e))}
-              y={yScale(y0(e) + y(e))}
-              fill={colorScale(label(stack))}
-              data={e}
-              onMouseMove={onMouseMove}
-              onMouseLeave={onMouseLeave}
-              />
-              );
-        });
-      });
-    }
-
-    return (
-        <g>{bars}</g>
-        );
-  }
-}
-
 class BarChart extends Component {
 
   static propTypes = {
@@ -95,6 +18,7 @@ class BarChart extends Component {
       PropTypes.object,
       PropTypes.array
     ]).isRequired,
+    groupedBars: PropTypes.bool,
     height: PropTypes.number.isRequired,
     label: PropTypes.func,
     legend: PropTypes.object,
@@ -113,8 +37,10 @@ class BarChart extends Component {
     values: PropTypes.func,
     width: PropTypes.number.isRequired,
     x: PropTypes.func,
+    xAxis: PropTypes.object,
     xScale: PropTypes.func,
     y: PropTypes.func,
+    yAxis: PropTypes.object,
     y0: PropTypes.func,
     yScale: PropTypes.func
   };
@@ -123,6 +49,7 @@ class BarChart extends Component {
     barPadding: 0.5,
     colorScale: d3.scale.category20(),
     data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
+    groupedBars: false,
     label: stack => { return stack.label; },
     margin: {top: 0, bottom: 0, left: 0, right: 0},
     offset: 'zero',
@@ -335,25 +262,51 @@ class BarChart extends Component {
     this._xScale,
     this._yScale];
 
+    let bars;
+    if (groupedBars) {
+      bars = data.map((stack, serieIndex) => {
+        return values(stack).map((e, index) => {
+          return (
+              <Bar
+              key={`${label(stack)}.${index}`}
+              width={xScale.rangeBand() / data.length}
+              height={yScale(yScale.domain()[0]) - yScale(y(e))}
+              x={xScale(x(e)) + ((xScale.rangeBand() * serieIndex) / data.length)}
+              y={yScale(y(e))}
+              fill={colorScale(label(stack))}
+              data={e}
+              onMouseMove={onMouseMove}
+              onMouseLeave={onMouseLeave}
+              />
+              );
+        });
+      });
+    } else {
+      bars = data.map(stack => {
+        return values(stack).map((e, index) => {
+          return (
+              <Bar
+              key={`${label(stack)}.${index}`}
+              width={xScale.rangeBand()}
+              height={yScale(yScale.domain()[0]) - yScale(y(e))}
+              x={xScale(x(e))}
+              y={yScale(y0(e) + y(e))}
+              fill={colorScale(label(stack))}
+              data={e}
+              onMouseMove={this.handleMouseMove.bind(this)}
+              onMouseLeave={this.handleMouseLeave.bind(this)}
+              />
+              );
+        });
+      });
+    }
+
     return (
       <div>
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
-          <DataSet
-            data={data}
-            xScale={xScale}
-            yScale={yScale}
-            colorScale={colorScale}
-            values={values}
-            label={label}
-            y={y}
-            y0={y0}
-            x={x}
-            onMouseMove={this.handleMouseMove.bind(this)}
-            onMouseLeave={this.handleMouseLeave.bind(this)}
-            groupedBars={groupedBars}
-          />
+          <g>{bars}</g>
           { this.props.children }
         </Chart>
         <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
