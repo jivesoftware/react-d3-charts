@@ -312,16 +312,19 @@ class LineChart extends Component {
       );
     });
 
-    //The <rect> below is needed in case we want to show the tooltip no matter where on the chart the mouse is.  Not sure if this should be used.
-    const rect = ReactDOMServer.renderToString(<rect width={innerWidth} height={innerHeight}/>);
-
     return (
       <div>
         <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} zero={yIntercept} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} zero={xIntercept} {...yAxis} />
           <g>
-            <g dangerouslySetInnerHTML={{__html: `<defs><clipPath id="lineClip_${sizeId}">${rect}`}}/>
+            <g>
+              <defs>
+                <clipPath id='lineClip_${sizeId}'>
+                  <rect width={innerWidth} height={innerHeight}/>
+                </clipPath>
+              </defs>
+            </g>
             {lines}
             <rect width={innerWidth} height={innerHeight} fill={'none'} stroke={'none'} style={{pointerEvents: 'all'}} onMouseMove={ function(evt){ handleMouseMove(evt, data); } } onMouseLeave={ handleMouseLeave } />
           </g>
