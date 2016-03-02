@@ -6,7 +6,6 @@ import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
 
 class LineChart extends Component {
 
@@ -30,6 +29,8 @@ class LineChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
+    shape: PropTypes.string,
+    shapeColor: PropTypes.string,
     stroke: PropTypes.object,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
@@ -53,7 +54,6 @@ class LineChart extends Component {
     defined: () => true,
     margin: {top: 0, bottom: 0, left: 0, right: 0},
     shape: 'circle',
-    shapeColor: null,
     stroke: {},
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
@@ -206,7 +206,6 @@ class LineChart extends Component {
     if (!this.state.tooltip.hidden) {
       const symbol = d3.svg.symbol().type(shape);
       const symbolColor = shapeColor ? shapeColor : colorScale(this._tooltipData.label);
-
       const translate = this._tooltipData ? `translate(${xScale(x(this._tooltipData.value))}, ${yScale(y(this._tooltipData.value))})` : '';
       tooltipSymbol = this.state.tooltip.hidden ? null : <path className='dot' d={symbol()} transform={translate} fill={symbolColor} onMouseMove={ function(evt) { handleMouseMove(evt, data); } } onMouseLeave={handleMouseLeave} />;
     }
