@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 class Bar extends Component {
 
   static propTypes = {
+    className: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     x: PropTypes.number.isRequired,
@@ -16,8 +17,13 @@ class Bar extends Component {
     onMouseLeave: PropTypes.func
   };
 
+  static defaultProps = {
+    className: 'bar'
+  };
+
   render() {
     const {
+      className,
       x,
       y,
       width,
@@ -30,7 +36,7 @@ class Bar extends Component {
 
     return (
       <rect
-        className='bar'
+        className={className}
         x={x}
         y={y}
         width={width}
