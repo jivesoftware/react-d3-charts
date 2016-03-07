@@ -6,7 +6,7 @@ import _ from 'lodash';
 class Legend extends Component {
 
   static propTypes = {
-    legendClassName: PropTypes.string,
+    className: PropTypes.string,
     cellsClassName: PropTypes.string,
     cellClassName: PropTypes.string,
     cellTextClassName: PropTypes.string,
@@ -22,7 +22,7 @@ class Legend extends Component {
   };
 
   static defaultProps = {
-    legendClassName: 'legend',
+    className: 'legend',
     cellsClassName: 'cells',
     cellClassName: 'cell',
     cellTextClassName: 'label',
@@ -127,7 +127,7 @@ class Legend extends Component {
 
     const legendTransform=`translate(${this.props.x}, ${this.props.y})`;
     return (
-      <g ref='legend' className={this.props.legendClassName}  transform={legendTransform}>
+      <g ref='legend' className={this.props.className}  transform={legendTransform}>
         <g className={this.props.cellsClassName}>
         { cells }
         </g>
