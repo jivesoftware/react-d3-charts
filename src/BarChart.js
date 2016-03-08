@@ -13,6 +13,7 @@ class BarChart extends Component {
   static propTypes = {
     barPadding: PropTypes.number,
     children: PropTypes.arrayOf(PropTypes.object),
+    className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
       PropTypes.object,
@@ -47,6 +48,7 @@ class BarChart extends Component {
 
   static defaultProps = {
     barPadding: 0.5,
+    className: 'chart',
     colorScale: d3.scale.category20(),
     data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
     groupedBars: false,
@@ -222,7 +224,7 @@ class BarChart extends Component {
 
     return (
       <div>
-        <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
+        <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
           <g>{bars}</g>

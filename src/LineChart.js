@@ -11,6 +11,7 @@ class LineChart extends Component {
 
   static propTypes = {
     children: PropTypes.arrayOf(PropTypes.object),
+    className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
       PropTypes.object,
@@ -47,6 +48,7 @@ class LineChart extends Component {
   };
 
   static defaultProps = {
+    className: 'chart',
     colorScale: d3.scale.category20(),
     data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
     interpolate: 'linear',
@@ -232,7 +234,7 @@ class LineChart extends Component {
 
     return (
       <div>
-        <Chart className='chart' height={height} width={width} margin={margin} legend={legend}>
+        <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend}>
           <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} zero={yIntercept} {...xAxis} />
           <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} zero={xIntercept} {...yAxis} />
           <g>
