@@ -5,6 +5,7 @@ import _ from 'lodash';
 class Chart extends Component {
 
   static propTypes = {
+    className: PropTypes.string,
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
     legend: PropTypes.object,
@@ -18,6 +19,7 @@ class Chart extends Component {
   };
 
   static defaultProps = {
+    className: 'chart',
     legend: {
     },
     margin: {
@@ -102,7 +104,7 @@ class Chart extends Component {
     }
 
     return (
-      <div ref='chart'>
+      <div className={ this.props.className } ref='chart'>
         <svg width={width} height={height+legendOffset} viewBox={viewBox} preserveAspectRatio={preserveAspectRatio} >
           <g transform={`translate(${margin.left}, ${margin.top})`}>{children}</g>
           {
