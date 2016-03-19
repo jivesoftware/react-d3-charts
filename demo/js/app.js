@@ -4,6 +4,7 @@ import BarChart from '../../src/BarChart.js';
 import LineChart from '../../src/LineChart.js';
 import SparklineChart from '../../src/SparklineChart.js';
 import AreaChart from '../../src/AreaChart.js';
+import DonutChart from '../../src/DonutChart.js';
 import Tabs from 'react-simpletabs';
 import '../css/main.scss';
 import _ from 'lodash';
@@ -51,6 +52,19 @@ const areaToolTips = function(label, value){
     </div> );
 };
 
+const donutToolTips = function(label, value){
+  return (
+    <div className='tip'>
+      <dl>
+        <dt>label</dt>
+        <dd>{ label }</dd>
+        <dt>value</dt>
+        <dd>{value}</dd>
+      </dl>
+    </div> );
+};
+
+
 const toolTipOffset = {top: 10, left: 10};
 
 const barData = [{
@@ -77,6 +91,13 @@ const sparkLineData = [
   {
     label: 'Cows',
     values: [{x: 0, y: 0}, {x: 1.3, y: 20}, {x: 3, y: 7}, {x: 3.5, y: 10}, {x: 4, y: 0}, {x: 4.5, y: 20}, {x: 5, y: 17.8}, {x: 5.5, y: 9}]
+  }
+];
+
+const donutData = [
+  {
+    label: 'Apple',
+    values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin', y: 3}]
   }
 ];
 
@@ -208,6 +229,22 @@ ReactDOM.render(
             margin={{top: 10, bottom: 10, left: 10, right: 10}}
             tooltipOffset={toolTipOffset}
             tooltipHtml={lineToolTips} />
+        </section>
+      </div>
+    </Tabs.Panel>
+
+    <Tabs.Panel title='Donut Charts'>
+      <div className='charts'>
+        <section className='chart last'>
+          <h1>Donut Chart</h1>
+          <DonutChart
+            colorScale={colorScale}
+            data={donutData[0]}
+            height={400}
+            width={400}
+            margin={margin}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={ donutToolTips } />
         </section>
       </div>
     </Tabs.Panel>

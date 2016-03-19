@@ -1,10 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
-import d3 from 'd3/d3.min.js';
+import d3 from 'd3'; //'d3/d3.min.js';
 import Chart from './Chart';
+import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-//import _ from 'lodash';
+import _ from 'lodash';
 
 class DonutChart extends Component {
 
@@ -44,7 +45,7 @@ class DonutChart extends Component {
   static defaultProps = {
     className: 'chart',
     colorScale: d3.scale.category20(),
-    data: {label: 'No data available', values: [{x: 'No data available', y: 1}]},
+    data: [],
     innerRadius: null,
     label: stack => { return stack.label; },
     margin: {top: 0, bottom: 0, left: 0, right: 0},
@@ -58,7 +59,9 @@ class DonutChart extends Component {
     tooltipClassName: null,
     tooltipHtml: null,
     tooltipContained: false,
-    values: stack => { return stack.values; },
+    values: stack => {
+      return stack.values;
+    },
     x: e => { return e.x; },
     y: e => { return e.y; },
     y0: () => { return 0; }
@@ -79,19 +82,19 @@ class DonutChart extends Component {
 
   componentWillMount() {
     helpers.calculateInner(this, this.props);
-    helpers.arrayify(this, this.props);
+    //helpers.arrayify(this, this.props);
     helpers.makeScales(this, this.props);
     helpers.addTooltipMouseHandlers(this);
   }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
-    helpers.arrayify(this, nextProps);
+    //helpers.arrayify(this, nextProps);
     helpers.makeScales(this, nextProps);
   }
 
   _tooltipHtml(d) {
-    const html = this.props.tooltipHtml(this.props.x(d), this.props.y(d));
+    const html = this.props.tooltipHtml(d.x, d.y);
     return [html, 0, 0];
   }
 
@@ -100,8 +103,8 @@ class DonutChart extends Component {
   }
 
   render() {
-
     const {
+      data,
       width,
       height,
       margin,
@@ -115,11 +118,9 @@ class DonutChart extends Component {
     } = this.props;
 
     const [
-      data,
       innerWidth,
       innerHeight,
     ] = [
-      this._data,
       this._innerWidth,
       this._innerHeight
     ];
@@ -128,7 +129,9 @@ class DonutChart extends Component {
     let outerRadius = this.props.outerRadius;
     let labelRadius = this.props.labelRadius;
 
-    let pie = d3.layout.pie().value(e => { return y(e); });
+    let pie = d3.layout.pie().value(e => {
+      return y(e);
+    });
 
     if (typeof sort !== 'undefined') {
       pie = pie.sort(sort);
@@ -147,40 +150,33 @@ class DonutChart extends Component {
       labelRadius = radius * 0.9;
     }
 
-    const arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius).padRadius(padRadius).cornerRadius(cornerRadius);
-
-    const outerArc = d3.svg.arc().innerRadius(labelRadius).outerRadius(labelRadius);
-
-    console.log('data:', JSON.stringify(data, undefined, 2));
-    const pieData = pie(values(data));
-
     const translation = `translate(${innerWidth/2}, ${innerHeight/2})`;
+    let wedges;
 
-    const strokeWidth = 2;
-		const stroke = '#000';
-    const fill = 'none';
-		const opacity = 0.3;
+    if (_.isPlainObject(data) && _.isArray(data.values) && data.values.length > 0){
+      const arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius).padRadius(padRadius).cornerRadius(cornerRadius);
+      const vals = values(data);
 
-    const wedges = pieData.map((e, index) => {
+      const pieData = pie(vals);
 
-      const d = arc(e);
-
-      const labelPos = outerArc.centroid(e);
-      labelPos[0] = radius * (this._midAngle(e) < Math.PI ? 1 : -1);
-
-      const textAnchor = this._midAngle(e) < Math.PI ? 'start' : 'end';
-
-      const linePos = outerArc.centroid(e);
-      linePos[0] = radius * 0.95 * (this._midAngle(e) < Math.PI ? 1 : -1);
-
-      return (
-        <g key={`${x(e.data)}.${y(e.data)}.${index}`} className='arc'>
-          <path fill={colorScale(x(e.data))} d={d} onMouseMove={ evt => {this.onMouseEnter(evt, e.data); } } onMouseLeave={  evt => { this.onMouseLeave(evt); } } />
-          <polyline opacity={opacity} strokeWidth={strokeWidth} stroke={stroke} fill={fill} points={[arc.centroid(e), outerArc.centroid(e), linePos]} />
-          <text dy='.35em' x={labelPos[0]} y={labelPos[1]} textAnchor={textAnchor}>{x(e.data)}</text>
-        </g>
-      );
-    });
+      wedges = pieData.map((e, index) => {
+        const d = arc(e);
+        return (
+          <Path
+            key={`${x(e.data)}.${y(e.data)}.${index}`}
+            className='arc'
+            stroke='none'
+            fill={colorScale(x(e.data))}
+            d={d}
+            onMouseMove={ (evt) => {
+              this.handleMouseMove(evt, e.data);
+            }}
+            onMouseLeave={this.handleMouseLeave.bind(this)}
+            data={data}
+          />
+        );
+      });
+    }
 
     return (
       <div>
