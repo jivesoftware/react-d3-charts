@@ -10,7 +10,7 @@ class Path extends Component {
     strokeDasharray: PropTypes.string,
     fill: PropTypes.string,
     d: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     onMouseMove: PropTypes.func,
     onMouseLeave: PropTypes.func,
     style: PropTypes.object

@@ -1,7 +1,7 @@
 # react-d3-charts
 A D3 charting library for React
 
-* Line charts, Bar charts, Sparkline Charts, and Area Charts (more are coming soon)
+* Line charts, Bar charts, Sparkline Charts, Donut Charts, and Area Charts (more are coming soon)
 * ES6 support
 * Grid lines
 * Legends
@@ -69,6 +69,16 @@ React.render(
         }
       ]
     />
+
+    <DonutChart
+      data=[
+        {
+          label: 'Animals',
+          values: [{x: 'Dogs', y: 10}, {x: 'Cats', y: 4}, {x: 'Beavers', y: 3 }]
+        }
+      ]
+    />
+
   </div>,
   document.getElementById('container')
 )
