@@ -16,8 +16,6 @@ class DonutChart extends Component {
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
     height: PropTypes.number.isRequired,
     innerRadius: PropTypes.number,
-    label: PropTypes.func,
-    labelRadius: PropTypes.number,
     legend: PropTypes.object,
     outerRadius: PropTypes.number,
     margin: PropTypes.shape({
@@ -38,7 +36,6 @@ class DonutChart extends Component {
     x: PropTypes.func,
     xScale: PropTypes.func,
     y: PropTypes.func,
-    y0: PropTypes.func,
     yScale: PropTypes.func
   };
 
@@ -47,10 +44,8 @@ class DonutChart extends Component {
     colorScale: d3.scale.category20(),
     data: [],
     innerRadius: null,
-    label: stack => { return stack.label; },
     margin: {top: 0, bottom: 0, left: 0, right: 0},
     outerRadius: null,
-    labelRadius: null,
     padRadius: 'auto',
     cornerRadius: 0,
     sort: undefined,
@@ -107,6 +102,7 @@ class DonutChart extends Component {
       data,
       width,
       height,
+      legend,
       margin,
       colorScale,
       padRadius,
@@ -127,7 +123,6 @@ class DonutChart extends Component {
 
     let innerRadius = this.props.innerRadius;
     let outerRadius = this.props.outerRadius;
-    let labelRadius = this.props.labelRadius;
 
     let pie = d3.layout.pie().value(e => {
       return y(e);
@@ -144,10 +139,6 @@ class DonutChart extends Component {
 
     if (!outerRadius) {
       outerRadius = radius * 0.4;
-    }
-
-    if (!labelRadius) {
-      labelRadius = radius * 0.9;
     }
 
     const translation = `translate(${innerWidth/2}, ${innerHeight/2})`;
@@ -180,7 +171,7 @@ class DonutChart extends Component {
 
     return (
       <div>
-        <Chart height={height} width={width} margin={margin}>
+        <Chart height={height} width={width} margin={margin} legend={legend}>
           <g transform={translation}>
             <g>{wedges}</g>
           </g>
