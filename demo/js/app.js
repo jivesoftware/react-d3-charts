@@ -5,6 +5,7 @@ import LineChart from '../../src/LineChart.js';
 import SparklineChart from '../../src/SparklineChart.js';
 import AreaChart from '../../src/AreaChart.js';
 import DonutChart from '../../src/DonutChart.js';
+import PieChart from '../../src/PieChart.js';
 import Tabs from 'react-simpletabs';
 import '../css/main.scss';
 import _ from 'lodash';
@@ -238,6 +239,22 @@ ReactDOM.render(
         <section className='chart last'>
           <h1>Donut Chart</h1>
           <DonutChart
+            colorScale={colorScale}
+            data={donutData[0]}
+            height={400}
+            width={400}
+            margin={margin}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={ donutToolTips } />
+        </section>
+      </div>
+    </Tabs.Panel>
+
+    <Tabs.Panel title='Pie Charts'>
+      <div className='charts'>
+        <section className='chart last'>
+          <h1>Pie Chart</h1>
+          <PieChart
             colorScale={colorScale}
             data={donutData[0]}
             height={400}
