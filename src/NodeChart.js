@@ -2,31 +2,25 @@ import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3'; //'d3/d3.min.js';
 import Chart from './Chart';
-import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
 
-class DonutChart extends Component {
+class NodeChart extends Component {
 
   static propTypes = {
     children: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     colorScale: PropTypes.func,
-    cornerRadius: PropTypes.number,
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
     height: PropTypes.number.isRequired,
-    innerRadius: PropTypes.number,
     legend: PropTypes.object,
-    outerRadius: PropTypes.number,
     margin: PropTypes.shape({
       top: PropTypes.number,
       bottom: PropTypes.number,
       left: PropTypes.number,
       right: PropTypes.number
     }),
-    padRadius: PropTypes.string,
-    sort: PropTypes.any,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
     tooltipClassName: PropTypes.string,
@@ -44,12 +38,7 @@ class DonutChart extends Component {
     className: 'chart',
     colorScale: d3.scale.category20(),
     data: [],
-    innerRadius: null,
     margin: {top: 0, bottom: 0, left: 0, right: 0},
-    outerRadius: null,
-    padRadius: 'auto',
-    cornerRadius: 0,
-    sort: undefined,
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
     tooltipClassName: null,
@@ -79,14 +68,14 @@ class DonutChart extends Component {
   componentWillMount() {
     helpers.calculateInner(this, this.props);
     //helpers.arrayify(this, this.props);
-    helpers.makeScales(this, this.props);
+    //helpers.makeScales(this, this.props);
     helpers.addTooltipMouseHandlers(this);
   }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
     //helpers.arrayify(this, nextProps);
-    helpers.makeScales(this, nextProps);
+    //helpers.makeScales(this, nextProps);
   }
 
   _tooltipHtml(d) {
@@ -94,8 +83,14 @@ class DonutChart extends Component {
     return [html, 0, 0];
   }
 
-  _midAngle(d){
-    return d.startAngle + (d.endAngle - d.startAngle)/2;
+  _findNode(link, field) {
+    const results = this.props.data.nodes.filter(function(d, i){
+      return i === link[field];
+    });
+    if (results.length > 0){
+      return results.shift();
+    }
+    return null;
   }
 
   render() {
@@ -105,66 +100,38 @@ class DonutChart extends Component {
       height,
       legend,
       margin,
-      colorScale,
-      padRadius,
-      cornerRadius,
-      sort,
-      x,
-      y,
-      values
+      colorScale
     } = this.props;
 
-    const [
-      innerWidth,
-      innerHeight,
-    ] = [
-      this._innerWidth,
-      this._innerHeight
-    ];
+    let links = [];
+    let nodes = [];
 
-    let innerRadius = this.props.innerRadius;
-    let outerRadius = this.props.outerRadius;
+    if (_.isPlainObject(data) && _.isArray(data.nodes) && data.nodes.length > 0 && _.isArray(data.links) && data.links.length > 0){
 
-    let pie = d3.layout.pie().value(e => {
-      return y(e);
-    });
-
-    if (typeof sort !== 'undefined') {
-      pie = pie.sort(sort);
-    }
-
-    const radius = Math.min(innerWidth, innerHeight) / 2;
-    if (!innerRadius) {
-      innerRadius = radius * 0.8;
-    }
-
-    if (!outerRadius) {
-      outerRadius = radius * 0.4;
-    }
-
-    const translation = `translate(${innerWidth/2}, ${innerHeight/2})`;
-    let wedges;
-
-    if (_.isPlainObject(data) && _.isArray(data.values) && data.values.length > 0){
-      const arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius).padRadius(padRadius).cornerRadius(cornerRadius);
-      const vals = values(data);
-
-      const pieData = pie(vals);
-
-      wedges = pieData.map((e, index) => {
-        const d = arc(e);
+      links = data.links.map((link, index) => {
         return (
-          <Path
-            key={`${x(e.data)}.${y(e.data)}.${index}`}
-            className='arc'
-            stroke='none'
-            fill={colorScale(x(e.data))}
-            d={d}
-            onMouseMove={ (evt) => {
-              this.handleMouseMove(evt, e.data);
-            }}
-            onMouseLeave={this.handleMouseLeave.bind(this)}
-            data={data}
+          <line
+            key={`${link.source}.${link.target}.${index}`}
+            className='link'
+            fill='none'
+            stroke='black'
+            x1={ this._findNode(link, 'source').x }
+            y1={ this._findNode(link, 'source').y }
+            x2={ this._findNode(link, 'target').x }
+            y2={ this._findNode(link, 'target').y }
+          />
+        );
+      });
+
+      nodes = data.nodes.map((node, index) => {
+        return (
+          <circle
+            key={`${node.name}.${index}`}
+            className='circle'
+            fill={ colorScale(index) }
+            cx={ node.x }
+            cy={ node.y }
+            r={ 15 }
           />
         );
       });
@@ -173,9 +140,8 @@ class DonutChart extends Component {
     return (
       <div>
         <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend}>
-          <g transform={translation}>
-            <g>{wedges}</g>
-          </g>
+          {links}
+          {nodes}
           { this.props.children }
         </Chart>
         <Tooltip {...this.state.tooltip}/>
@@ -184,4 +150,5 @@ class DonutChart extends Component {
   }
 }
 
-export default DonutChart;
+export default NodeChart;
+
