@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3/d3.min.js';
 import Chart from './Chart';
+import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
 
@@ -20,6 +21,11 @@ class NodeChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
+    tooltipHtml: PropTypes.func,
+    tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipClassName: PropTypes.string,
+    tooltipContained: PropTypes.bool,
+    tooltipOffset: PropTypes.objectOf(PropTypes.number),
     values: PropTypes.func,
     width: PropTypes.number.isRequired,
     x: PropTypes.func,
@@ -33,6 +39,11 @@ class NodeChart extends Component {
     colorScale: d3.scale.category20(),
     data: [],
     margin: {top: 0, bottom: 0, left: 0, right: 0},
+    tooltipMode: 'mouse',
+    tooltipOffset: {top: -35, left: 0},
+    tooltipClassName: null,
+    tooltipHtml: null,
+    tooltipContained: false,
     values: stack => {
       return stack.values;
     },
@@ -45,6 +56,9 @@ class NodeChart extends Component {
     super(props);
     this.state = {
       nodes: _.clone(this.props.data.nodes),
+      tooltip: {
+        hidden: true
+      }
     };
   }
 
@@ -57,18 +71,32 @@ class NodeChart extends Component {
 
   componentWillMount() {
     helpers.calculateInner(this, this.props);
+    helpers.addTooltipMouseHandlers(this);
   }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
+    const tooltip = this.state.tooltip;
     this.setState({
       nodes: _.clone(nextProps.data.nodes),
+      tooltip: tooltip
     });
   }
 
   componentDidUpdate(){
     this._setupDrag();
   }
+
+  _tooltipHtml(nodeIndex, position) {
+    const len = this.state.nodes.length;
+    let node = { name: '', value: '' };
+    if (nodeIndex > -1 && nodeIndex < len){
+      node = this.state.nodes[nodeIndex];
+    }
+    const html = this.props.tooltipHtml(node.name, node.value, position);
+    return [html, 0, 0];
+  }
+
 
   _setupDrag(){
     setTimeout(() => {
@@ -84,9 +112,11 @@ class NodeChart extends Component {
     if (nodeIndex > -1 && nodeIndex < len){
       nodes[nodeIndex].x += dx;
       nodes[nodeIndex].y += dy;
+      const tooltip = this.state.tooltip;
       this.setState({
         drag: {
-          nodes: this.state.nodes
+          nodes: this.state.nodes,
+          tooltip: tooltip
         }
       });
     }
@@ -143,6 +173,10 @@ class NodeChart extends Component {
             cy={ node.y }
             r={ 15 }
             data-node-index={index}
+            onMouseMove={ (evt) => {
+              this.handleMouseMove(evt, index);
+            }}
+            onMouseLeave={this.handleMouseLeave.bind(this)}
           />
         );
       });
@@ -155,6 +189,7 @@ class NodeChart extends Component {
           {nodes}
           { this.props.children }
         </Chart>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
       </div>
     );
   }
