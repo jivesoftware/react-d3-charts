@@ -18,10 +18,6 @@ describe('<NodeChart />', function() {
   });
 
   it('renders a <NodeChart /> with some data', function(){
-    const data = {
-      label: 'Apple',
-      values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin', y: 3}]
-    };
     const nodeData = {
       nodes: [
         {
