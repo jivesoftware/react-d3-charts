@@ -44,12 +44,15 @@ class NodeChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      drag: null
+      nodes: _.clone(this.props.data.nodes),
     };
   }
 
   componentDidMount() {
     this._svg_node = ReactDOM.findDOMNode(this).getElementsByTagName('svg')[0];
+    const self = this;
+    this._drag = d3.behavior.drag().on('drag', function() { self._handleDrag(this, d3.event.dx, d3.event.dy); });
+    this._setupDrag();
   }
 
   componentWillMount() {
@@ -58,10 +61,39 @@ class NodeChart extends Component {
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
+    this.setState({
+      nodes: _.clone(nextProps.data.nodes),
+    });
+  }
+
+  componentDidUpdate(){
+    this._setupDrag();
+  }
+
+  _setupDrag(){
+    setTimeout(() => {
+      const circles = d3.selectAll('.circle');
+      circles.call(this._drag);
+    }, 100);
+  }
+
+  _handleDrag(node, dx, dy){
+    const nodeIndex = node.getAttribute('data-node-index');
+    const nodes = this.state.nodes;
+    const len = nodes.length;
+    if (nodeIndex > -1 && nodeIndex < len){
+      nodes[nodeIndex].x += dx;
+      nodes[nodeIndex].y += dy;
+      this.setState({
+        drag: {
+          nodes: this.state.nodes
+        }
+      });
+    }
   }
 
   _findNode(link, field) {
-    const results = this.props.data.nodes.filter(function(d, i){
+    const results = this.state.nodes.filter(function(d, i){
       return i === link[field];
     });
     if (results.length > 0){
@@ -70,91 +102,8 @@ class NodeChart extends Component {
     return null;
   }
 
-  _nodePosition(e){
-    const dim = e.target.getBoundingClientRect();
-    const x = e.clientX - dim.left;
-    const y = e.clientY - dim.top;
-    return { x, y };
-  }
-
-  _startDrag(e){
-    // only left mouse button
-    if (e.button !== 0){
-      return;
-    }
-    const nodeIndex = parseInt(e.target.getAttribute('data-node-index'), 10);
-    if (_.isNumber(nodeIndex)){
-      const state = {
-        drag: _.assign(this.state.drag, this._nodePosition(e))
-      };
-      state.drag.nodeIndex = nodeIndex;
-      this.setState(state);
-    }
-  }
-
-  _stopDrag(e){
-    if (!this.state.drag){
-      return;
-    }
-    if (_.isNumber(this.state.drag.nodeIndex)){
-      const nodeIndex = this.state.drag.nodeIndex;
-      const len = this.props.data.nodes.length;
-      if (nodeIndex > -1 && nodeIndex < len){
-        const node = this.props.data.nodes[nodeIndex];
-        _.assign(node, this._nodePosition(e));
-      }
-    }
-    this.setState({
-      drag: null
-    });
-  }
-
-  handleMouseMove(e) {
-    if (!this.state.drag){
-      return;
-    }
-    this.setState({
-      drag: _.assign(this.state.drag, this._nodePosition(e))
-    });
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
-  handleMouseLeave(e) {
-    if (!this.state.drag){
-      return;
-    }
-    this._stopDrag(e);
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
-  handleMouseDown(e) {
-    if (this.state.drag){
-      this._stopDrag(e);
-    }
-    // only left mouse button
-    if (e.button !== 0){
-      return;
-    }
-    this._startDrag(e);
-
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
-  handleMouseUp(e) {
-    if (!this.state.drag){
-      return;
-    }
-    this._stopDrag(e);
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
   render() {
     const {
-      data,
       width,
       height,
       legend,
@@ -165,55 +114,33 @@ class NodeChart extends Component {
     let links = [];
     let nodes = [];
 
-    if (_.isPlainObject(data) && _.isArray(data.nodes) && data.nodes.length > 0 && _.isArray(data.links) && data.links.length > 0){
+    if (_.isArray(this.state.nodes) && this.state.nodes.length > 0 && _.isArray(this.props.data.links) && this.props.data.links.length > 0){
 
-      links = data.links.map((link, index) => {
-        let sourceX, sourceY, targetX, targetY;
+      links = this.props.data.links.map((link, index) => {
         const source = this._findNode(link, 'source');
         const  target = this._findNode(link, 'target');
-        sourceX = source.x;
-        sourceY = source.y;
-        targetX = target.x;
-        targetY = target.y;
-        if (this.state.drag){
-          if (link.source === this.state.drag.nodeIndex){
-            sourceX = this.state.drag.x;
-            sourceY = this.state.drag.y;
-          }
-          if (target.source === this.state.drag.nodeIndex){
-            targetX = this.state.drag.x;
-            targetY = this.state.drag.y;
-          }
-        }
         return (
           <line
             key={`${link.source}.${link.target}.${index}`}
             className='link'
             fill='none'
             stroke='black'
-            x1={ sourceX }
-            y1={ sourceY }
-            x2={ targetX }
-            y2={ targetY }
+            x1={ source.x }
+            y1={ source.y }
+            x2={ target.x }
+            y2={ target.y }
           />
         );
       });
 
-      nodes = data.nodes.map((node, index) => {
-        let x = node.x;
-        let y = node.y;
-        console.log(index, 'this.state.drag', this.state.drag);
-        if (this.state.drag && index === this.state.drag.nodeIndex){
-          x = this.state.drag.x;
-          y = this.state.drag.y;
-        }
+      nodes = this.state.nodes.map((node, index) => {
         return (
           <circle
             key={`${node.name}.${index}`}
             className='circle'
             fill={ colorScale(index) }
-            cx={ x }
-            cy={ y }
+            cx={ node.x }
+            cy={ node.y }
             r={ 15 }
             data-node-index={index}
           />
@@ -222,7 +149,7 @@ class NodeChart extends Component {
     }
 
     return (
-      <div onMouseDown={ this.handleMouseDown.bind(this) } onMouseUp={ this.handleMouseUp.bind(this) } onMouseMove={ this.handleMouseMove.bind(this) } onMouseLeave={this.handleMouseLeave.bind(this)} >
+      <div>
         <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend} >
           {links}
           {nodes}
