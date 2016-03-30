@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
-import d3 from 'd3'; //'d3/d3.min.js';
+import d3 from 'd3/d3.min.js';
 import Chart from './Chart';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
