@@ -6,6 +6,7 @@ import SparklineChart from '../../src/SparklineChart.js';
 import AreaChart from '../../src/AreaChart.js';
 import DonutChart from '../../src/DonutChart.js';
 import PieChart from '../../src/PieChart.js';
+import NodeChart from '../../src/NodeChart.js';
 import Tabs from 'react-simpletabs';
 import '../css/main.scss';
 import _ from 'lodash';
@@ -101,6 +102,49 @@ const donutData = [
     values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin', y: 3}]
   }
 ];
+
+const nodeData = {
+  nodes: [
+    {
+      name: 'A',
+      x: 200,
+      y: 150,
+      value: 20
+    },
+    {
+      name: 'B',
+      x: 140,
+      y: 300,
+      value: 15
+    },
+    {
+      name: 'C',
+      x: 300,
+      y: 300,
+      value: 25
+    },
+    {
+      name: 'D',
+      x: 300,
+      y: 180,
+      value: 8
+    }
+  ],
+  links: [
+    {
+      source: 0,
+      target: 1
+    },
+    {
+      source: 1,
+      target: 2
+    },
+    {
+      source: 2,
+      target: 3
+    }
+  ]
+};
 
 const legendData = function(options) {
   const config = _.defaults({}, options, {
@@ -265,6 +309,22 @@ ReactDOM.render(
         </section>
       </div>
     </Tabs.Panel>
+
+    <Tabs.Panel title='Node Charts'>
+      <div className='charts'>
+        <section className='chart last'>
+          <h1>Node Chart</h1>
+          <NodeChart
+            colorScale={colorScale}
+            data={nodeData}
+            height={400}
+            width={400}
+            margin={margin}
+          />
+        </section>
+      </div>
+    </Tabs.Panel>
+
 
     <Tabs.Panel title='Legends'>
       <div className='charts'>

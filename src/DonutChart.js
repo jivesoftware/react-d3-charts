@@ -11,6 +11,7 @@ class DonutChart extends Component {
 
   static propTypes = {
     children: PropTypes.arrayOf(PropTypes.object),
+    className: PropTypes.string,
     colorScale: PropTypes.func,
     cornerRadius: PropTypes.number,
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
@@ -171,7 +172,7 @@ class DonutChart extends Component {
 
     return (
       <div>
-        <Chart height={height} width={width} margin={margin} legend={legend}>
+        <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend}>
           <g transform={translation}>
             <g>{wedges}</g>
           </g>
