@@ -72,8 +72,8 @@ class NodeChart extends Component {
 
   _setupDrag(){
     setTimeout(() => {
-      const circles = d3.selectAll('.circle');
-      circles.call(this._drag);
+      const nodes = d3.selectAll('.node');
+      nodes.call(this._drag);
     }, 100);
   }
 
@@ -137,7 +137,7 @@ class NodeChart extends Component {
         return (
           <circle
             key={`${node.name}.${index}`}
-            className='circle'
+            className='node'
             fill={ colorScale(index) }
             cx={ node.x }
             cy={ node.y }
