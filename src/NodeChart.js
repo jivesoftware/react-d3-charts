@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
-import d3 from 'd3'; //'d3/d3.min.js';
+import d3 from 'd3/d3.min.js';
 import Chart from './Chart';
+import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
 
@@ -13,6 +14,7 @@ class NodeChart extends Component {
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
     height: PropTypes.number.isRequired,
+    layout: PropTypes.string,
     legend: PropTypes.object,
     margin: PropTypes.shape({
       top: PropTypes.number,
@@ -20,6 +22,11 @@ class NodeChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
+    tooltipHtml: PropTypes.func,
+    tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
+    tooltipClassName: PropTypes.string,
+    tooltipContained: PropTypes.bool,
+    tooltipOffset: PropTypes.objectOf(PropTypes.number),
     values: PropTypes.func,
     width: PropTypes.number.isRequired,
     x: PropTypes.func,
@@ -32,7 +39,13 @@ class NodeChart extends Component {
     className: 'chart',
     colorScale: d3.scale.category20(),
     data: [],
+    layout: 'radial',
     margin: {top: 0, bottom: 0, left: 0, right: 0},
+    tooltipMode: 'mouse',
+    tooltipOffset: {top: -35, left: 0},
+    tooltipClassName: null,
+    tooltipHtml: null,
+    tooltipContained: false,
     values: stack => {
       return stack.values;
     },
@@ -43,8 +56,12 @@ class NodeChart extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      nodes: _.clone(this.props.data.nodes),
+      tree: this._buildTree(this.props),
+      tooltip: {
+        hidden: true
+      }
     };
   }
 
@@ -57,12 +74,15 @@ class NodeChart extends Component {
 
   componentWillMount() {
     helpers.calculateInner(this, this.props);
+    helpers.addTooltipMouseHandlers(this);
   }
 
   componentWillReceiveProps(nextProps) {
     helpers.calculateInner(this, nextProps);
+    const tooltip = this.state.tooltip;
     this.setState({
-      nodes: _.clone(nextProps.data.nodes),
+      tree: this._buildTree(nextProps),
+      tooltip: tooltip
     });
   }
 
@@ -70,24 +90,74 @@ class NodeChart extends Component {
     this._setupDrag();
   }
 
+  _radial(center, radius){
+    return function(node, index){
+      const D2R = Math.PI / 180;
+      const startAngle = 90;
+      const currentAngle = startAngle + (30 * index);
+      const currentAngleRadians = currentAngle * D2R;
+      const radialPoint = {
+        x: center.x + radius * Math.cos(currentAngleRadians),
+        y: center.y + radius * Math.sin(currentAngleRadians)
+      };
+      node.x += (radialPoint.x - node.x);
+      node.y += (radialPoint.y - node.y);
+    };
+  }
+
+  _buildTree(props){
+    const innerWidth = props.width - props.margin.left - props.margin.right;
+    const innerHeight = props.height - props.margin.top - props.margin.bottom;
+    const center = {
+      x: innerWidth / 2,
+      y: innerHeight / 2
+    };
+    const diameter = Math.min(innerHeight, innerWidth);
+    const radius = diameter / 2;
+    const size = [innerWidth, innerHeight];
+    const tree = d3.layout.tree().size(size);
+    const nodes = tree.nodes(this.props.data);
+    if (this.props.layout === 'radial'){
+      const len = nodes.length;
+      const radial = this._radial(center, radius);
+      nodes[0].x = center.x;
+      nodes[0].y = center.y;
+      for(let i = 1; i < len; ++i){
+        radial(nodes[i], i);
+      }
+    }
+    const links = tree.links(nodes);
+    return {
+      nodes: nodes,
+      links: links
+    };
+  }
+
+  _tooltipHtml(node, position) {
+    const html = this.props.tooltipHtml(node.name, node.value, position);
+    return [html, 0, 0];
+  }
+
+
   _setupDrag(){
     setTimeout(() => {
-      const circles = d3.selectAll('.circle');
-      circles.call(this._drag);
+      const nodes = d3.selectAll('.node');
+      nodes.call(this._drag);
     }, 100);
   }
 
   _handleDrag(node, dx, dy){
     const nodeIndex = node.getAttribute('data-node-index');
-    const nodes = this.state.nodes;
+    const tree = this.state.tree;
+    const nodes = tree.nodes;
+    const tooltip = this.state.tooltip;
     const len = nodes.length;
     if (nodeIndex > -1 && nodeIndex < len){
       nodes[nodeIndex].x += dx;
       nodes[nodeIndex].y += dy;
       this.setState({
-        drag: {
-          nodes: this.state.nodes
-        }
+        tree: tree,
+        tooltip: tooltip
       });
     }
   }
@@ -102,50 +172,54 @@ class NodeChart extends Component {
     return null;
   }
 
+  _createLink(link, index){
+    return (
+      <line
+        key={`${link.source}.${link.target}.${index}`}
+        className='link'
+        fill='none'
+        stroke='black'
+        x1={ link.source.x }
+        y1={ link.source.y }
+        x2={ link.target.x }
+        y2={ link.target.y }
+      />
+    );
+  }
+
+  _createNode(node, index){
+    return (
+      <circle
+        key={`${node.name}.${index}`}
+        className='node'
+        fill={ this.props.colorScale(index) }
+        cx={ node.x }
+        cy={ node.y }
+        r={ 15 }
+        data-node-index={index}
+        onMouseMove={ (evt) => {
+          this.handleMouseMove(evt, node);
+        }}
+        onMouseLeave={this.handleMouseLeave.bind(this)}
+      />
+    );
+  }
+
   render() {
     const {
       width,
       height,
       legend,
-      margin,
-      colorScale
+      margin
     } = this.props;
 
     let links = [];
     let nodes = [];
 
-    if (_.isArray(this.state.nodes) && this.state.nodes.length > 0 && _.isArray(this.props.data.links) && this.props.data.links.length > 0){
-
-      links = this.props.data.links.map((link, index) => {
-        const source = this._findNode(link, 'source');
-        const  target = this._findNode(link, 'target');
-        return (
-          <line
-            key={`${link.source}.${link.target}.${index}`}
-            className='link'
-            fill='none'
-            stroke='black'
-            x1={ source.x }
-            y1={ source.y }
-            x2={ target.x }
-            y2={ target.y }
-          />
-        );
-      });
-
-      nodes = this.state.nodes.map((node, index) => {
-        return (
-          <circle
-            key={`${node.name}.${index}`}
-            className='circle'
-            fill={ colorScale(index) }
-            cx={ node.x }
-            cy={ node.y }
-            r={ 15 }
-            data-node-index={index}
-          />
-        );
-      });
+    const tree = this.state.tree;
+    if (_.isArray(tree.nodes) && tree.nodes.length > 0 && _.isArray(tree.links) && tree.links.length > 0){
+      links = tree.links.map(this._createLink.bind(this));
+      nodes = tree.nodes.map(this._createNode.bind(this));
     }
 
     return (
@@ -155,6 +229,7 @@ class NodeChart extends Component {
           {nodes}
           { this.props.children }
         </Chart>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
       </div>
     );
   }

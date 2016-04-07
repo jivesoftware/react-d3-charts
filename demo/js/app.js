@@ -66,6 +66,17 @@ const donutToolTips = function(label, value){
     </div> );
 };
 
+const nodeToolTips = function(label, value){
+  return (
+    <div className='tip'>
+      <dl>
+        <dt>label</dt>
+        <dd>{ label }</dd>
+        <dt>value</dt>
+        <dd>{value}</dd>
+      </dl>
+    </div> );
+};
 
 const toolTipOffset = {top: 10, left: 10};
 
@@ -103,45 +114,29 @@ const donutData = [
   }
 ];
 
-const nodeData = {
-  nodes: [
-    {
-      name: 'A',
-      x: 200,
-      y: 150,
-      value: 20
-    },
+const nodeTree = {
+  name: 'A',
+  value: 20,
+  children: [
     {
       name: 'B',
-      x: 140,
-      y: 300,
-      value: 15
+      value: 15,
+      children: [
+        {
+          name: 'E',
+          value: 9
+        }
+      ]
     },
     {
       name: 'C',
-      x: 300,
-      y: 300,
-      value: 25
+      value: 25,
+      children: null
     },
     {
       name: 'D',
-      x: 300,
-      y: 180,
-      value: 8
-    }
-  ],
-  links: [
-    {
-      source: 0,
-      target: 1
-    },
-    {
-      source: 1,
-      target: 2
-    },
-    {
-      source: 2,
-      target: 3
+      value: 8,
+      children: null
     }
   ]
 };
@@ -316,11 +311,12 @@ ReactDOM.render(
           <h1>Node Chart</h1>
           <NodeChart
             colorScale={colorScale}
-            data={nodeData}
+            data={nodeTree}
             height={400}
             width={400}
             margin={margin}
-          />
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={ nodeToolTips } />
         </section>
       </div>
     </Tabs.Panel>

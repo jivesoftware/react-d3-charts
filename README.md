@@ -1,7 +1,7 @@
 # react-d3-charts
 A D3 charting library for React
 
-* Line charts, Bar charts, Sparkline Charts, Donut Charts, Pie Charts, and Area Charts (more are coming soon)
+* Line charts, Bar charts, Sparkline Charts, Donut Charts, Pie Charts, Node Charts, and Area Charts (more are coming soon)
 * ES6 support
 * Grid lines
 * Legends
@@ -20,80 +20,10 @@ $ npm install react-d3-charts
 Check out the demo
 ```shell
 $ npm run demo
-$ open http://localhost:8080/webpack-dev-server/
+$ open http://localhost:8080
 ```
 
 There also tests that you should probably look at.
-
-###tl;dr
-```
-React.render(
-  <div>
-
-    <BarChart
-      data=[
-        {
-          label: 'Fruits',
-          values: [{x: 'Apple', y: 10}, {x: 'Peaches', y: 4}, {x: 'Pumpkin Pie', y: 3 }]
-        }
-      ]
-    />
-
-    <LineChart
-      data=[
-        {
-          label: 'Apple',
-          values: [{x: 0, y: 2}, {x: 1.3, y: 5}, {x: 3, y: 6}, {x: 3.5, y: 6.5}]
-        },
-        {
-          label: 'Peaches',
-          values: [{x: 0, y: 3}, {x: 1.3, y: 4}, {x: 3, y: 7}, {x: 3.5, y: 8}]
-        }
-      ]
-    />
-
-    <AreaChart
-      data=[
-        {
-          label: 'Snowmen',
-          values: [{x: 0, y: 5}, {x: 1.3, y: 6}, {x: 3, y: 7}, {x: 3.5, y: 8}]
-        }
-      ]
-    />
-
-    <SparklineChart
-      data=[
-        {
-          label: 'Stocks',
-          values: [{x: 0, y: 20}, {x: 1.3, y: 15}, {x: 3, y: 60}, {x: 3.5, y: 45}]
-        }
-      ]
-    />
-
-    <DonutChart
-      data=[
-        {
-          label: 'Animals',
-          values: [{x: 'Dogs', y: 10}, {x: 'Cats', y: 4}, {x: 'Beavers', y: 3 }]
-        }
-      ]
-    />
-
-    <PieChart
-      data=[
-        {
-          label: 'Games',
-          values: [{x: 'bingo', y: 10}, {x: 'blackjack', y: 4}, {x: 'baseball', y: 3 }]
-        }
-      ]
-    />
-
-  </div>,
-  document.getElementById('container')
-)
-```
-
-
 
 ##code layout
 The es6 source code is in the /src directory.
