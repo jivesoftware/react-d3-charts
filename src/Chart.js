@@ -9,6 +9,7 @@ class Chart extends Component {
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
     legend: PropTypes.object,
+    defs: PropTypes.arrayOf(PropTypes.object),
     children: PropTypes.arrayOf(PropTypes.object),
     margin: PropTypes.shape({
       top: PropTypes.number,
@@ -20,6 +21,7 @@ class Chart extends Component {
 
   static defaultProps = {
     className: 'chart',
+    defs: [],
     legend: {
     },
     margin: {
@@ -106,6 +108,7 @@ class Chart extends Component {
     return (
       <div className={ this.props.className } ref='chart'>
         <svg width={width} height={height+legendOffset} viewBox={viewBox} preserveAspectRatio={preserveAspectRatio} >
+          { this.props.defs }
           <g transform={`translate(${margin.left}, ${margin.top})`}>{children}</g>
           {
             hasLegend && <Legend x={this.state.legendX} y={this.state.legendY} {...this.props.legend} />
