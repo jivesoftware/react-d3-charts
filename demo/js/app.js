@@ -118,10 +118,12 @@ const donutData = [
 const nodeTree = {
   name: 'A',
   value: 20,
+  imageUrl: 'https://placekitten.com/30/30',
   children: [
     {
       name: 'B',
       value: 15,
+      imageUrl: 'https://placekitten.com/30/30',
       children: [
         {
           name: 'E',
@@ -132,171 +134,205 @@ const nodeTree = {
     {
       name: 'C',
       value: 25,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'D',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'E',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'F',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'G',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'H',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'I',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'J',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'K',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'L',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
     {
       name: 'M',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'N',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'O',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'P',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'Q',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'R',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'S',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'T',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'U',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'V',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'W',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'X',
       value: 8,
+      imageUrl: 'https://placekitten.com/30/31',
       children: null
     },
     {
       name: 'Y',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'Z',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'A1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'B1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'C1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'D1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'E1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'F1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'G1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'H1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'I1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {
       name: 'J1',
       value: 8,
+      imageUrl: 'https://placekitten.com/29/29',
       children: null
     },
     {

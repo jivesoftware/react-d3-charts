@@ -200,12 +200,31 @@ class NodeChart extends Component {
     );
   }
 
+  _createPattern(node, index){
+    const hasImage = _.isString(node.imageUrl);
+    if (hasImage){
+      return (
+        <pattern key={ `node-image-${index}`} id={ `node-image-${index}`} height='100%' width='100%' x='0' patternUnits='userSpaceOnUse' y='0'>
+          <image
+            x={ node.x - this.props.nodeRadius }
+            y={ node.y - this.props.nodeRadius }
+            height={ this.props.nodeRadius * 2 }
+            width={ this.props.nodeRadius * 2 }
+            xlinkHref={ node.imageUrl }
+          />
+        </pattern>
+      );
+    }
+    return '';
+  }
+
   _createNode(node, index){
+    const hasImage = _.isString(node.imageUrl);
     return (
       <circle
         key={`${node.name}.${index}`}
         className='node'
-        fill={ this.props.colorScale(index) }
+        fill={ hasImage ? `url(#node-image-${index})` : this.props.colorScale(index) }
         cx={ node.x }
         cy={ node.y }
         r={ this.props.nodeRadius }
@@ -226,18 +245,20 @@ class NodeChart extends Component {
       margin
     } = this.props;
 
+    let patterns = [];
     let links = [];
     let nodes = [];
 
     const tree = this.state.tree;
     if (_.isArray(tree.nodes) && tree.nodes.length > 0 && _.isArray(tree.links) && tree.links.length > 0){
       links = tree.links.map(this._createLink.bind(this));
+      patterns = _.compact(tree.nodes.map(this._createPattern.bind(this)));
       nodes = tree.nodes.map(this._createNode.bind(this));
     }
 
     return (
       <div>
-        <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend} >
+        <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend} defs={patterns} >
           {links}
           {nodes}
           { this.props.children }
