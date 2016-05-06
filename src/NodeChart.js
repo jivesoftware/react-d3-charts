@@ -14,6 +14,7 @@ class NodeChart extends Component {
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
     height: PropTypes.number.isRequired,
+    innerNodeOffset: PropTypes.number,
     layout: PropTypes.string,
     legend: PropTypes.object,
     margin: PropTypes.shape({
@@ -22,6 +23,7 @@ class NodeChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
+    nodeRadius: PropTypes.number,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
     tooltipClassName: PropTypes.string,
@@ -39,8 +41,10 @@ class NodeChart extends Component {
     className: 'chart',
     colorScale: d3.scale.category20(),
     data: [],
+    innerNodeOffset: 6,
     layout: 'radial',
     margin: {top: 0, bottom: 0, left: 0, right: 0},
+    nodeRadius: 15,
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
     tooltipClassName: null,
@@ -113,16 +117,25 @@ class NodeChart extends Component {
       y: innerHeight / 2
     };
     const diameter = Math.min(innerHeight, innerWidth);
-    const radius = diameter / 2;
+    let radius = (diameter / 2) - (this.props.nodeRadius);
     const size = [innerWidth, innerHeight];
     const tree = d3.layout.tree().size(size);
     const nodes = tree.nodes(this.props.data);
     if (this.props.layout === 'radial'){
       const len = nodes.length;
-      const radial = this._radial(center, radius);
+      let radial = this._radial(center, radius);
+
+      //put the first node in the center
       nodes[0].x = center.x;
       nodes[0].y = center.y;
+
+      //distribute the around the center like the hours on a clock
       for(let i = 1; i < len; ++i){
+        if (((i-1) % 12) === 0){
+          //distribute the next go round with a shorter radius
+          radius = Math.max(0, radius - (this.props.nodeRadius * 2) - this.props.innerNodeOffset);
+          radial = this._radial(center, radius);
+        }
         radial(nodes[i], i);
       }
     }
@@ -195,7 +208,7 @@ class NodeChart extends Component {
         fill={ this.props.colorScale(index) }
         cx={ node.x }
         cy={ node.y }
-        r={ 15 }
+        r={ this.props.nodeRadius }
         data-node-index={index}
         onMouseMove={ (evt) => {
           this.handleMouseMove(evt, node);

@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 const colorScale= d3.scale.category20();
 const margin = {top: 10, bottom: 50, left: 50, right: 10};
+const nodeMargin = {top: 0, bottom: 0, left: 0, right: 0};
 
 const barToolTips = function(x, y0, y, total, dataLabel){
   return (
@@ -137,9 +138,250 @@ const nodeTree = {
       name: 'D',
       value: 8,
       children: null
-    }
+    },
+    {
+      name: 'E',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'F',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'G',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'H',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'I',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'J',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'K',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'L',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'M',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'N',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'O',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'P',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Q',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'R',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'S',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'T',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'U',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'V',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'W',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'X',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Y',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Z',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'A1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'B1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'C1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'D1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'E1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'F1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'G1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'H1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'I1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'J1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'K1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'L1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'M1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'N1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'O1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'P1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Q1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'R1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'S1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'T1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'U1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'V1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'W1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'X1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Y1',
+      value: 8,
+      children: null
+    },
+    {
+      name: 'Z1',
+      value: 8,
+      children: null
+    },
   ]
 };
+
 
 const legendData = function(options) {
   const config = _.defaults({}, options, {
@@ -312,9 +554,9 @@ ReactDOM.render(
           <NodeChart
             colorScale={colorScale}
             data={nodeTree}
-            height={400}
-            width={400}
-            margin={margin}
+            height={500}
+            width={500}
+            margin={nodeMargin}
             tooltipOffset={toolTipOffset}
             tooltipHtml={ nodeToolTips } />
         </section>
