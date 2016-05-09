@@ -23,7 +23,10 @@ class NodeChart extends Component {
       left: PropTypes.number,
       right: PropTypes.number
     }),
-    nodeRadius: PropTypes.number,
+    defaultNodeRadius: PropTypes.number,
+    maxNodeRadius: PropTypes.number,
+    minNodeRadius: PropTypes.number,
+    scaleNodesByValue: PropTypes.bool,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
     tooltipClassName: PropTypes.string,
@@ -44,7 +47,10 @@ class NodeChart extends Component {
     innerNodeOffset: 6,
     layout: 'radial',
     margin: {top: 0, bottom: 0, left: 0, right: 0},
-    nodeRadius: 15,
+    defaultNodeRadius: 15,
+    maxNodeRadius: 50,
+    minNodeRadius: 10,
+    scaleNodesByValue: false,
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
     tooltipClassName: null,
@@ -94,7 +100,7 @@ class NodeChart extends Component {
     this._setupDrag();
   }
 
-  _radial(center, radius){
+  _radial(center, radius, scaleRadius){
     return function(node, index){
       const D2R = Math.PI / 180;
       const startAngle = 90;
@@ -106,6 +112,37 @@ class NodeChart extends Component {
       };
       node.x += (radialPoint.x - node.x);
       node.y += (radialPoint.y - node.y);
+      if (scaleRadius){
+        node.radius = scaleRadius(node.value);
+        console.log('assigned node', node.value, node.radius);
+      }
+    };
+  }
+
+  _values(nodes) {
+    const nodeValues = [];
+    _.forEach(nodes, function(node){
+      nodeValues.push(node.value);
+    });
+    nodeValues.sort(function(a, b){
+      return b - a;
+    });
+    //console.log('sorted', nodeValues, nodeValues.length);
+    return nodeValues;
+  }
+
+  _makeScale(nodeValues, minNodeRadius, maxNodeRadius, defaultNodeRadius) {
+    const largestNodeRadius = nodeValues[0];
+    const smallestNodeRadius = nodeValues[nodeValues.length - 1];
+    const rangeSize = largestNodeRadius - smallestNodeRadius;
+    if (rangeSize > 0){
+      return function(value){
+        const adjustedValue = value - smallestNodeRadius;
+        return minNodeRadius + Math.floor((maxNodeRadius/rangeSize) * adjustedValue);
+      };
+    }
+    return function(){
+      return defaultNodeRadius;
     };
   }
 
@@ -116,27 +153,40 @@ class NodeChart extends Component {
       x: innerWidth / 2,
       y: innerHeight / 2
     };
+
     const diameter = Math.min(innerHeight, innerWidth);
-    let radius = (diameter / 2) - (this.props.nodeRadius);
     const size = [innerWidth, innerHeight];
     const tree = d3.layout.tree().size(size);
-    const nodes = tree.nodes(this.props.data);
-    if (this.props.layout === 'radial'){
+    const nodes = tree.nodes(props.data);
+    let scaleRadius;
+
+    if (props.scaleNodesByValue){
+      const nodeValues = this._values(nodes);
+      if (nodeValues.length > 0){
+        scaleRadius = this._makeScale(nodeValues, props.minNodeRadius, props.maxNodeRadius, props.defaultNodeRadius);
+      }
+    }
+
+    let chartRadius = (diameter / 2);
+
+    if (props.layout === 'radial'){
       const len = nodes.length;
-      let radial = this._radial(center, radius);
+      let radial = this._radial(center, chartRadius, scaleRadius);
 
       //put the first node in the center
       nodes[0].x = center.x;
       nodes[0].y = center.y;
+      nodes[0].radius = scaleRadius ? scaleRadius(nodes[0].value) : props.defaultNodeRadius;
 
       //distribute the around the center like the hours on a clock
       for(let i = 1; i < len; ++i){
         if (((i-1) % 12) === 0){
           //distribute the next go round with a shorter radius
-          radius = Math.max(0, radius - (this.props.nodeRadius * 2) - this.props.innerNodeOffset);
-          radial = this._radial(center, radius);
+          chartRadius = Math.max(0, chartRadius) - (props.defaultNodeRadius * 2) - props.innerNodeOffset;
+          radial = this._radial(center, chartRadius, scaleRadius);
         }
-        radial(nodes[i], i);
+        nodes[i].radius = props.defaultNodeRadius;
+        radial(nodes[i], i, scaleRadius);
       }
     }
     const links = tree.links(nodes);
@@ -206,10 +256,10 @@ class NodeChart extends Component {
       return (
         <pattern key={ `node-image-${index}`} id={ `node-image-${index}`} height='100%' width='100%' x='0' patternUnits='userSpaceOnUse' y='0'>
           <image
-            x={ node.x - this.props.nodeRadius }
-            y={ node.y - this.props.nodeRadius }
-            height={ this.props.nodeRadius * 2 }
-            width={ this.props.nodeRadius * 2 }
+            x={ node.x - node.radius }
+            y={ node.y - node.radius }
+            height={ node.radius * 2 }
+            width={ node.radius * 2 }
             xlinkHref={ node.imageUrl }
           />
         </pattern>
@@ -227,7 +277,7 @@ class NodeChart extends Component {
         fill={ hasImage ? `url(#node-image-${index})` : this.props.colorScale(index) }
         cx={ node.x }
         cy={ node.y }
-        r={ this.props.nodeRadius }
+        r={ node.radius }
         data-node-index={index}
         onMouseMove={ (evt) => {
           this.handleMouseMove(evt, node);

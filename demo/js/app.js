@@ -394,27 +394,7 @@ const nodeTree = {
       name: 'V1',
       value: 8,
       children: null
-    },
-    {
-      name: 'W1',
-      value: 8,
-      children: null
-    },
-    {
-      name: 'X1',
-      value: 8,
-      children: null
-    },
-    {
-      name: 'Y1',
-      value: 8,
-      children: null
-    },
-    {
-      name: 'Z1',
-      value: 8,
-      children: null
-    },
+    }
   ]
 };
 
@@ -585,6 +565,17 @@ ReactDOM.render(
 
     <Tabs.Panel title='Node Charts'>
       <div className='charts'>
+        <section className='chart'>
+          <h1>Node Chart</h1>
+          <NodeChart
+            colorScale={colorScale}
+            data={nodeTree}
+            height={500}
+            width={500}
+            margin={nodeMargin}
+            tooltipOffset={toolTipOffset}
+            tooltipHtml={ nodeToolTips } />
+        </section>
         <section className='chart last'>
           <h1>Node Chart</h1>
           <NodeChart
@@ -593,6 +584,7 @@ ReactDOM.render(
             height={500}
             width={500}
             margin={nodeMargin}
+            scaleNodesByValue
             tooltipOffset={toolTipOffset}
             tooltipHtml={ nodeToolTips } />
         </section>
