@@ -5,6 +5,7 @@ import Chart from './Chart';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
 import _ from 'lodash';
+import shortid from 'shortid';
 
 class NodeChart extends Component {
 
@@ -67,6 +68,7 @@ class NodeChart extends Component {
   constructor(props) {
     super(props);
 
+    this.uniqueId = shortid.generate();
     this.state = {
       tree: this._buildTree(this.props),
       tooltip: {
@@ -146,22 +148,6 @@ class NodeChart extends Component {
       return defaultNodeRadius;
     };
   }
-
-  //_constrain(node, width, height){
-    ////constrain to parent
-    //if ((node.x - node.radius) < 0){
-      //node.x = node.radius;
-    //}
-    //if ((node.x + node.radius) > width){
-      //node.x = width - node.radius;
-    //}
-    //if ((node.y - node.radius) < 0){
-      //node.y = node.radius;
-    //}
-    //if ((node.y + node.radius) > height){
-      //node.y = height - node.radius;
-    //}
-  //}
 
   _collide(node) {
     const nr = node.radius + 16,
@@ -276,20 +262,10 @@ class NodeChart extends Component {
     }
   }
 
-  _findNode(link, field) {
-    const results = this.state.nodes.filter(function(d, i){
-      return i === link[field];
-    });
-    if (results.length > 0){
-      return results.shift();
-    }
-    return null;
-  }
-
   _createLink(link, index){
     return (
       <line
-        key={`${link.source}.${link.target}.${index}`}
+        key={`${this.uniqueId}.${link.source}.${link.target}.${index}`}
         className='link'
         fill='none'
         stroke='black'
@@ -301,11 +277,15 @@ class NodeChart extends Component {
     );
   }
 
+  _imageId(index){
+    return `${this.uniqueId}-node-image-${index}`;
+  }
+
   _createPattern(node, index){
     const hasImage = _.isString(node.imageUrl);
     if (hasImage){
       return (
-        <pattern key={ `node-image-${index}`} id={ `node-image-${index}`} height='100%' width='100%' x='0' patternUnits='userSpaceOnUse' y='0'>
+        <pattern key={ this._imageId(index) } id={ this._imageId(index) } height='100%' width='100%' x='0' patternUnits='userSpaceOnUse' y='0'>
           <image
             x={ node.x - node.radius }
             y={ node.y - node.radius }
@@ -323,9 +303,9 @@ class NodeChart extends Component {
     const hasImage = _.isString(node.imageUrl);
     return (
       <circle
-        key={`${node.name}.${index}`}
+        key={ `${this.uniqueId}.${node.name}.${index}` }
         className='node'
-        fill={ hasImage ? `url(#node-image-${index})` : this.props.colorScale(index) }
+        fill={ hasImage ? 'url(#'+ this._imageId(index) + ')' : this.props.colorScale(index) }
         cx={ node.x }
         cy={ node.y }
         r={ node.radius }

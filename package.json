@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/jivesoftware/react-d3-charts.git"
   },
-   "publishConfig": {
+  "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "keywords": [
@@ -60,6 +60,7 @@
     "lodash": "^4.0.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "sc-color": "^0.4.0"
+    "sc-color": "^0.4.0",
+    "shortid": "^2.2.6"
   }
 }
