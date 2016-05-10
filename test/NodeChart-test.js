@@ -18,50 +18,33 @@ describe('<NodeChart />', function() {
   });
 
   it('renders a <NodeChart /> with some data', function(){
-    const nodeData = {
-      nodes: [
-        {
-          name: 'A',
-          x: 200,
-          y: 150,
-          value: 20
-        },
+
+    const nodeTree = {
+      name: 'A',
+      value: 20,
+      imageUrl: 'https://placekitten.com/30/30',
+      children: [
         {
           name: 'B',
-          x: 140,
-          y: 300,
-          value: 15
+          value: 15,
+          imageUrl: 'https://placekitten.com/30/30',
+          children: [
+            {
+              name: 'E',
+              value: 9
+            }
+          ]
         },
         {
           name: 'C',
-          x: 300,
-          y: 300,
-          value: 25
-        },
-        {
-          name: 'D',
-          x: 300,
-          y: 180,
-          value: 8
-        }
-      ],
-      links: [
-        {
-          source: 0,
-          target: 1
-        },
-        {
-          source: 1,
-          target: 2
-        },
-        {
-          source: 2,
-          target: 3
+          value: 25,
+          imageUrl: 'https://placekitten.com/30/30',
+          children: null
         }
       ]
     };
 
-    const wrapper = shallow(<NodeChart height={ height } width={ width } data={ nodeData } />);
+    const wrapper = shallow(<NodeChart height={ height } width={ width } data={ nodeTree } />);
     const chart = wrapper.find('.chart');
     expect(chart).to.have.length(1);
     const props = chart.props();
