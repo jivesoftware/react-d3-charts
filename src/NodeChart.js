@@ -76,7 +76,8 @@ class NodeChart extends Component {
   }
 
   componentDidMount() {
-    this._svg_node = ReactDOM.findDOMNode(this).getElementsByTagName('svg')[0];
+    const svgs = ReactDOM.findDOMNode(this).getElementsByTagName('svg');
+    this._svg_node = svgs[0];
     const self = this;
     this._drag = d3.behavior.drag().on('drag', function() { self._handleDrag(this, d3.event.dx, d3.event.dy); });
     this._setupDrag();
@@ -100,7 +101,7 @@ class NodeChart extends Component {
     this._setupDrag();
   }
 
-  _radial(center, radius, scaleRadius, width, height){
+  _radial(center, radius, scaleRadius){
     return function(node, index){
       const D2R = Math.PI / 180;
       const startAngle = 90;
@@ -114,7 +115,7 @@ class NodeChart extends Component {
       node.y += (radialPoint.y - node.y);
       if (scaleRadius){
         node.radius = scaleRadius(node.value);
-        console.log('assigned node', node.value, node.radius);
+        //console.log('assigned node', node.value, node.radius);
       }
     };
   }
@@ -200,7 +201,7 @@ class NodeChart extends Component {
     const diameter = Math.min(innerHeight, innerWidth);
     const size = [innerWidth, innerHeight];
     const tree = d3.layout.tree().size(size);
-    const nodes = tree.nodes(props.data);
+    const nodes = tree.nodes(_.cloneDeep(props.data));
     let i, scaleRadius;
 
     if (props.scaleNodesByValue){
