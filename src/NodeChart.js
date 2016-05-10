@@ -100,7 +100,7 @@ class NodeChart extends Component {
     this._setupDrag();
   }
 
-  _radial(center, radius, scaleRadius){
+  _radial(center, radius, scaleRadius, width, height){
     return function(node, index){
       const D2R = Math.PI / 180;
       const startAngle = 90;
@@ -146,6 +146,49 @@ class NodeChart extends Component {
     };
   }
 
+  //_constrain(node, width, height){
+    ////constrain to parent
+    //if ((node.x - node.radius) < 0){
+      //node.x = node.radius;
+    //}
+    //if ((node.x + node.radius) > width){
+      //node.x = width - node.radius;
+    //}
+    //if ((node.y - node.radius) < 0){
+      //node.y = node.radius;
+    //}
+    //if ((node.y + node.radius) > height){
+      //node.y = height - node.radius;
+    //}
+  //}
+
+  _collide(node) {
+    const nr = node.radius + 16,
+      nx1 = node.x - nr,
+      nx2 = node.x + nr,
+      ny1 = node.y - nr,
+      ny2 = node.y + nr;
+    return function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== node)) {
+        let x = node.x - quad.point.x;
+        let y = node.y - quad.point.y;
+        let l = Math.sqrt(x * x + y * y);
+        const r = node.radius + quad.point.radius;
+        if (l < r) {
+          l = (l - r) / l * 0.5;
+          node.x -= x *= l;
+          node.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2
+          || x2 < nx1
+          || y1 > ny2
+          || y2 < ny1;
+    };
+  }
+
   _buildTree(props){
     const innerWidth = props.width - props.margin.left - props.margin.right;
     const innerHeight = props.height - props.margin.top - props.margin.bottom;
@@ -158,7 +201,7 @@ class NodeChart extends Component {
     const size = [innerWidth, innerHeight];
     const tree = d3.layout.tree().size(size);
     const nodes = tree.nodes(props.data);
-    let scaleRadius;
+    let i, scaleRadius;
 
     if (props.scaleNodesByValue){
       const nodeValues = this._values(nodes);
@@ -171,7 +214,7 @@ class NodeChart extends Component {
 
     if (props.layout === 'radial'){
       const len = nodes.length;
-      let radial = this._radial(center, chartRadius, scaleRadius);
+      let radial = this._radial(center, chartRadius, scaleRadius, props.width, props.height);
 
       //put the first node in the center
       nodes[0].x = center.x;
@@ -179,14 +222,21 @@ class NodeChart extends Component {
       nodes[0].radius = scaleRadius ? scaleRadius(nodes[0].value) : props.defaultNodeRadius;
 
       //distribute the around the center like the hours on a clock
-      for(let i = 1; i < len; ++i){
+      for(i = 1; i < len; ++i){
         if (((i-1) % 12) === 0){
           //distribute the next go round with a shorter radius
-          chartRadius = Math.max(0, chartRadius) - (props.defaultNodeRadius * 2) - props.innerNodeOffset;
-          radial = this._radial(center, chartRadius, scaleRadius);
+          chartRadius = Math.max(0, chartRadius) - (chartRadius * 0.25) - props.innerNodeOffset;
+          radial = this._radial(center, chartRadius, scaleRadius, props.width, props.height);
         }
         nodes[i].radius = props.defaultNodeRadius;
         radial(nodes[i], i, scaleRadius);
+      }
+
+      //detect and fix collisions
+      const q = d3.geom.quadtree(nodes);
+      i = 0;
+      while (++i < len) {
+        q.visit(this._collide(nodes[i]));
       }
     }
     const links = tree.links(nodes);

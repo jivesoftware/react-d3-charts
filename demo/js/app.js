@@ -151,7 +151,7 @@ const nodeTree = {
     },
     {
       name: 'F',
-      value: 8,
+      value: 20,
       imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
@@ -169,7 +169,7 @@ const nodeTree = {
     },
     {
       name: 'I',
-      value: 8,
+      value: 20,
       imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
@@ -187,7 +187,7 @@ const nodeTree = {
     },
     {
       name: 'L',
-      value: 8,
+      value: 20,
       imageUrl: 'https://placekitten.com/30/30',
       children: null
     },
