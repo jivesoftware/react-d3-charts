@@ -584,6 +584,7 @@ ReactDOM.render(
             height={500}
             width={500}
             margin={nodeMargin}
+            labelNodes
             scaleNodesByValue
             tooltipOffset={toolTipOffset}
             tooltipHtml={ nodeToolTips } />

@@ -27,6 +27,7 @@ class NodeChart extends Component {
     defaultNodeRadius: PropTypes.number,
     maxNodeRadius: PropTypes.number,
     minNodeRadius: PropTypes.number,
+    labelNodes: PropTypes.bool,
     scaleNodesByValue: PropTypes.bool,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
@@ -52,6 +53,7 @@ class NodeChart extends Component {
     maxNodeRadius: 50,
     minNodeRadius: 10,
     scaleNodesByValue: false,
+    labelNodes: true,
     tooltipMode: 'mouse',
     tooltipOffset: {top: -35, left: 0},
     tooltipClassName: null,
@@ -318,6 +320,18 @@ class NodeChart extends Component {
     );
   }
 
+  _createLabels(node){
+    return (
+      <text
+        x={ node.x }
+        y={ node.y }
+        dy={ '0.35em' }
+        textAnchor='middle'>
+        { node.name }
+      </text>
+    );
+  }
+
   render() {
     const {
       width,
@@ -329,12 +343,16 @@ class NodeChart extends Component {
     let patterns = [];
     let links = [];
     let nodes = [];
+    let labels = [];
 
     const tree = this.state.tree;
     if (_.isArray(tree.nodes) && tree.nodes.length > 0 && _.isArray(tree.links) && tree.links.length > 0){
       links = tree.links.map(this._createLink.bind(this));
       patterns = _.compact(tree.nodes.map(this._createPattern.bind(this)));
       nodes = tree.nodes.map(this._createNode.bind(this));
+      if (this.props.labelNodes){
+        labels = tree.nodes.map(this._createLabels.bind(this));
+      }
     }
 
     return (
@@ -342,6 +360,7 @@ class NodeChart extends Component {
         <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend} defs={patterns} >
           {links}
           {nodes}
+          {labels}
           { this.props.children }
         </Chart>
         <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
