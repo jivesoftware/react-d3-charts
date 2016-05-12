@@ -1,6 +1,6 @@
 {
   "name": "react-d3-charts",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "description": "A D3 charting library for React",
   "main": "index.js",
   "scripts": {

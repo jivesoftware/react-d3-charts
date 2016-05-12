@@ -320,9 +320,10 @@ class NodeChart extends Component {
     );
   }
 
-  _createLabels(node){
+  _createLabels(node, index){
     return (
       <text
+        key={ `${this.uniqueId}.${node.name}.${index}` }
         x={ node.x }
         y={ node.y }
         dy={ '0.35em' }

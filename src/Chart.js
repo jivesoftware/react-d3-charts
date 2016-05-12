@@ -10,7 +10,7 @@ class Chart extends Component {
     width: PropTypes.number.isRequired,
     legend: PropTypes.object,
     defs: PropTypes.arrayOf(PropTypes.object),
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     margin: PropTypes.shape({
       top: PropTypes.number,
       bottom: PropTypes.number,
