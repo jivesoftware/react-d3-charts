@@ -178,7 +178,7 @@ class DonutChart extends Component {
           </g>
           { this.props.children }
         </Chart>
-        <Tooltip {...this.state.tooltip}/>
+        <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />
       </div>
     );
   }
