@@ -430,7 +430,9 @@ ReactDOM.render(
             width={400}
             margin={margin}
             tooltipHtml={barToolTips}
-            tooltipOffset={toolTipOffset}/>
+            tooltipOffset={toolTipOffset}>
+            <span>Child</span>
+          </BarChart>
         </section>
         <section className='chart last'>
           <h1>Bar Chart (with Legend)</h1>
@@ -458,7 +460,9 @@ ReactDOM.render(
             width={400}
             margin={margin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={lineToolTips} />
+            tooltipHtml={lineToolTips} >
+            <span>Child</span>
+          </LineChart>
         </section>
         <section className='chart last'>
           <h1>Line Chart (with Legend)</h1>
@@ -499,7 +503,9 @@ ReactDOM.render(
             width={400}
             margin={margin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={areaToolTips} />
+            tooltipHtml={areaToolTips}>
+            <span>Child</span>
+          </AreaChart>
         </section>
       </div>
     </Tabs.Panel>
@@ -542,7 +548,9 @@ ReactDOM.render(
             width={400}
             margin={margin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={ donutToolTips } />
+            tooltipHtml={ donutToolTips } >
+          <span>Child</span>
+          </DonutChart>
         </section>
       </div>
     </Tabs.Panel>
@@ -558,7 +566,9 @@ ReactDOM.render(
             width={400}
             margin={margin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={ donutToolTips } />
+            tooltipHtml={ donutToolTips } >
+            <span>Child</span>
+          </PieChart>
         </section>
       </div>
     </Tabs.Panel>
@@ -574,7 +584,9 @@ ReactDOM.render(
             width={500}
             margin={nodeMargin}
             tooltipOffset={toolTipOffset}
-            tooltipHtml={ nodeToolTips } />
+            tooltipHtml={ nodeToolTips } >
+            <span>Child</span>
+          </NodeChart>
         </section>
         <section className='chart last'>
           <h1>Node Chart</h1>
