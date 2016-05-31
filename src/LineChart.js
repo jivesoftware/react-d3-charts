@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 class LineChart extends Component {
 
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
