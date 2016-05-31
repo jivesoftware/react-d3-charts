@@ -12,7 +12,7 @@ class BarChart extends Component {
 
   static propTypes = {
     barPadding: PropTypes.number,
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
