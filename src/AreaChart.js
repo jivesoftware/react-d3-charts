@@ -11,7 +11,7 @@ import * as helpers from './helpers.js';
 class AreaChart extends Component {
 
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([
