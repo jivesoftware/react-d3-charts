@@ -10,7 +10,7 @@ import _ from 'lodash';
 class DonutChart extends Component {
 
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     className: PropTypes.string,
     colorScale: PropTypes.func,
     cornerRadius: PropTypes.number,
