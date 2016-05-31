@@ -83,7 +83,12 @@ class NodeChart extends Component {
     const svgs = ReactDOM.findDOMNode(this).getElementsByTagName('svg');
     this._svg_node = svgs[0];
     const self = this;
-    this._drag = d3.behavior.drag().on('drag', function() { self._handleDrag(this, d3.event.dx, d3.event.dy); });
+    this._drag = d3.behavior.drag().on('drag', function() {
+      if (d3.event.sourceEvent.buttons){
+        self._handleDrag(this, d3.event.dx, d3.event.dy);
+      }
+    });
+
     this._setupDrag();
   }
 
@@ -252,7 +257,7 @@ class NodeChart extends Component {
     const nodeIndex = node.getAttribute('data-node-index');
     const tree = this.state.tree;
     const nodes = tree.nodes;
-    const tooltip = this.state.tooltip;
+    const tooltip = { hidden: true };
     const len = nodes.length;
     if (nodeIndex > -1 && nodeIndex < len){
       nodes[nodeIndex].x += dx;
