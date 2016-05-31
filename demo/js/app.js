@@ -119,6 +119,7 @@ const nodeTree = {
   name: 'A',
   value: 20,
   imageUrl: 'https://placekitten.com/30/30',
+  hideLabel: true,
   children: [
     {
       name: 'B',
@@ -153,7 +154,8 @@ const nodeTree = {
       name: 'F',
       value: 20,
       imageUrl: 'https://placekitten.com/30/30',
-      children: null
+      children: null,
+      label: 'ZEBRA'
     },
     {
       name: 'G',

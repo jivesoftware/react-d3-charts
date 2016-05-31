@@ -10,7 +10,7 @@ import shortid from 'shortid';
 class NodeChart extends Component {
 
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object),
+    children: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]),
     className: PropTypes.string,
     colorScale: PropTypes.func,
     data: PropTypes.oneOfType([ PropTypes.object, PropTypes.array ]).isRequired,
@@ -321,6 +321,9 @@ class NodeChart extends Component {
   }
 
   _createLabels(node, index){
+    if (node.hideLabel){
+      return null;
+    }
     return (
       <text
         key={ `${this.uniqueId}.${node.name}.${index}` }
@@ -328,7 +331,7 @@ class NodeChart extends Component {
         y={ node.y }
         dy={ '0.35em' }
         textAnchor='middle'>
-        { node.name }
+        { node.label || node.name }
       </text>
     );
   }
@@ -352,7 +355,7 @@ class NodeChart extends Component {
       patterns = _.compact(tree.nodes.map(this._createPattern.bind(this)));
       nodes = tree.nodes.map(this._createNode.bind(this));
       if (this.props.labelNodes){
-        labels = tree.nodes.map(this._createLabels.bind(this));
+        labels = _.compact(tree.nodes.map(this._createLabels.bind(this)));
       }
     }
 
