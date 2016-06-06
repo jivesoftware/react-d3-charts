@@ -600,6 +600,7 @@ ReactDOM.render(
             margin={nodeMargin}
             labelNodes
             scaleNodesByValue
+            onNodeClick={ function(){ alert('Node click'); } }
             tooltipOffset={toolTipOffset}
             tooltipHtml={ nodeToolTips } />
         </section>

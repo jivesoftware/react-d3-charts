@@ -328,7 +328,7 @@ class NodeChart extends Component {
         r={ node.radius }
         data-node-index={index}
         onClick={ (evt) => {
-          this._handleClick.bind(evt, node);
+          this._handleClick(evt, node);
         }}
         onMouseMove={ (evt) => {
           this.handleMouseMove(evt, node);
