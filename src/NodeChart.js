@@ -28,6 +28,7 @@ class NodeChart extends Component {
     maxNodeRadius: PropTypes.number,
     minNodeRadius: PropTypes.number,
     labelNodes: PropTypes.bool,
+    onNodeClick: PropTypes.func,
     scaleNodesByValue: PropTypes.bool,
     tooltipHtml: PropTypes.func,
     tooltipMode: PropTypes.oneOf(['mouse', 'element', 'fixed']),
@@ -269,6 +270,15 @@ class NodeChart extends Component {
     }
   }
 
+  _handleClick(evt, node){
+    if (_.isPlainObject(this.state.tooltip) && _.isBoolean(this.state.tooltip.hidden) && (!this.state.tooltip.hidden)){
+      //tooltips are hidden when dragging so we only register a click if not dragging
+      if (this.props.onNodeClick){
+        this.props.onNodeClick(evt, node);
+      }
+    }
+  }
+
   _createLink(link, index){
     return (
       <line
@@ -317,6 +327,9 @@ class NodeChart extends Component {
         cy={ node.y }
         r={ node.radius }
         data-node-index={index}
+        onClick={ (evt) => {
+          this._handleClick.bind(evt, node);
+        }}
         onMouseMove={ (evt) => {
           this.handleMouseMove(evt, node);
         }}
