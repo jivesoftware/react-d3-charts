@@ -85,8 +85,9 @@ class NodeChart extends Component {
     this._svg_node = svgs[0];
     const self = this;
     this._drag = d3.behavior.drag().on('drag', function() {
-      if (d3.event.sourceEvent.buttons){
-        self._handleDrag(this, d3.event.dx, d3.event.dy);
+      const evt = d3.event;
+      if (evt.sourceEvent.buttons || evt.type === 'drag'){
+        self._handleDrag(this, evt.dx, evt.dy);
       }
     });
 
@@ -185,6 +186,10 @@ class NodeChart extends Component {
   }
 
   _buildTree(props){
+    if (!props){
+      return;
+    }
+
     const innerWidth = props.width - props.margin.left - props.margin.right;
     const innerHeight = props.height - props.margin.top - props.margin.bottom;
     const center = {
@@ -368,7 +373,7 @@ class NodeChart extends Component {
     let labels = [];
 
     const tree = this.state.tree;
-    if (_.isArray(tree.nodes) && tree.nodes.length > 0 && _.isArray(tree.links) && tree.links.length > 0){
+    if (tree && _.isArray(tree.nodes) && tree.nodes.length > 0 && _.isArray(tree.links) && tree.links.length > 0){
       links = tree.links.map(this._createLink.bind(this));
       patterns = _.compact(tree.nodes.map(this._createPattern.bind(this)));
       nodes = tree.nodes.map(this._createNode.bind(this));
