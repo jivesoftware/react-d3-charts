@@ -159,7 +159,7 @@ class NodeChart extends Component {
   }
 
   _collide(node) {
-    const nr = node.radius + 16,
+    const nr = node.radius,
       nx1 = node.x - nr,
       nx2 = node.x + nr,
       ny1 = node.y - nr,
@@ -171,7 +171,7 @@ class NodeChart extends Component {
         let l = Math.sqrt(x * x + y * y);
         const r = node.radius + quad.point.radius;
         if (l < r) {
-          l = (l - r) / l * 0.5;
+            l = (l - r) / l;
           node.x -= x *= l;
           node.y -= y *= l;
           quad.point.x += x;
