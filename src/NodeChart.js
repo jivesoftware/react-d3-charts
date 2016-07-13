@@ -73,7 +73,7 @@ class NodeChart extends Component {
 
     this.uniqueId = shortid.generate();
     this.state = {
-      tree: this._buildTree(this.props),
+      tree: this._buildTree(props),
       tooltip: {
         hidden: true
       }
@@ -171,7 +171,7 @@ class NodeChart extends Component {
         let l = Math.sqrt(x * x + y * y);
         const r = node.radius + quad.point.radius;
         if (l < r) {
-            l = (l - r) / l;
+          l = (l - r) / l;
           node.x -= x *= l;
           node.y -= y *= l;
           quad.point.x += x;
