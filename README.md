@@ -20,7 +20,7 @@ $ npm install react-d3-charts
 Check out the demo
 ```shell
 $ npm run demo
-$ open http://localhost:8080
+$ open http://localhost:3000
 ```
 
 There also tests that you should probably look at.

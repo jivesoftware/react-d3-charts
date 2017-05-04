@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf ./lib/*",
     "build": "npm run clean && ./node_modules/.bin/babel src --out-dir lib/",
-    "demo": "webpack-dev-server --content-base demo --hot --progress --colors",
+    "demo": "webpack-dev-server --content-base demo --hot --progress --colors --port 3000",
     "prepublish": "npm run build",
     "test": "babel-node ./node_modules/.bin/babel-istanbul test _mocha -- --recursive 'test/**/*.js'"
   },
