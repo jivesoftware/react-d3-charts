@@ -190,8 +190,7 @@ export function addTooltipMouseHandlers(component) {
       position = [point.x - margin.left, point.y - margin.top];
     } else {
       const rect = svg.getBoundingClientRect();
-      position = [e.clientX - rect.left - svg.clientLeft - margin.left,
-      e.clientY - rect.top - svg.clientTop - margin.top];
+      position = [e.clientX - rect.left - svg.clientLeft - margin.left, e.clientY - rect.top - svg.clientTop - margin.top];
     }
 
     const [html, xPos, yPos] = this._tooltipHtml(data, position);

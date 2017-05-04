@@ -117,7 +117,7 @@ class Legend extends Component {
       const symbolColor = keys.length ? color(obj[keys[0]]).html() : color(this.props.defaultSymbolColor).html();
       return (
         <g key={ this.props.cellClassName + index } className={this.props.cellClassName} >
-          <path d={symbolPathData} style={{ fill: symbolColor }}></path>
+          <path d={symbolPathData} style={{ fill: symbolColor }} />
           <text className={this.props.cellTextClassName} textAnchor='start'>
             <tspan x='0.5em' y='0.4em' dy='0em'>{ keys[0] }</tspan>
           </text>

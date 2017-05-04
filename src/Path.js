@@ -40,17 +40,16 @@ class Path extends Component {
     } = this.props;
 
     return (
-      <path
-      className={className}
-      stroke={stroke}
-      strokeWidth={strokeWidth}
-      strokeLinecap={strokeLinecap}
-      strokeDasharray={strokeDasharray}
-      fill={fill}
-      d={d}
-      onMouseMove={ evt => { onMouseMove(evt, data); } }
-      onMouseLeave={  evt => { onMouseLeave(evt); } }
-      style={style}
+      <path className={className}
+            stroke={stroke}
+            strokeWidth={strokeWidth}
+            strokeLinecap={strokeLinecap}
+            strokeDasharray={strokeDasharray}
+            fill={fill}
+            d={d}
+            onMouseMove={ evt => { onMouseMove(evt, data); } }
+            onMouseLeave={  evt => { onMouseLeave(evt); } }
+            style={style}
       />
     );
   }

@@ -5,7 +5,6 @@ import Axis from './Axis';
 import Bar from './Bar';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-//import _ from 'lodash';
 import ReactDOM from 'react-dom';
 
 class BarChart extends Component {
@@ -135,10 +134,10 @@ class BarChart extends Component {
     let datum, value, total, valuesLen, dataLabel;
     const dataLen = this._data.length;
     total = 0;
-    for(i=0; i<dataLen; ++i){
+    for (i=0; i<dataLen; ++i){
       datum = this._data[i];
       valuesLen = datum.values.length;
-      for(j=0; j<valuesLen; ++j){
+      for (j=0; j<valuesLen; ++j){
         value = datum.values[j];
         if (value.x === x){
           total += value.y;
@@ -178,17 +177,18 @@ class BarChart extends Component {
       xScale,
       yScale
     ] = [this._data,
-    this._innerWidth,
-    this._innerHeight,
-    this._xScale,
-    this._yScale];
+      this._innerWidth,
+      this._innerHeight,
+      this._xScale,
+      this._yScale
+    ];
 
     let bars;
     if (groupedBars) {
       bars = data.map((stack, serieIndex) => {
         return values(stack).map((e, index) => {
           return (
-              <Bar
+            <Bar
               key={`${label(stack)}.${index}`}
               width={xScale.rangeBand() / data.length}
               height={yScale(yScale.domain()[0]) - yScale(y(e))}
@@ -198,15 +198,14 @@ class BarChart extends Component {
               data={e}
               onMouseMove={this.handleMouseMove.bind(this)}
               onMouseLeave={this.handleMouseLeave.bind(this)}
-              />
-              );
+            />);
         });
       });
     } else {
       bars = data.map(stack => {
         return values(stack).map((e, index) => {
           return (
-              <Bar
+            <Bar
               key={`${label(stack)}.${index}`}
               width={xScale.rangeBand()}
               height={yScale(yScale.domain()[0]) - yScale(y(e))}
@@ -216,8 +215,7 @@ class BarChart extends Component {
               data={e}
               onMouseMove={this.handleMouseMove.bind(this)}
               onMouseLeave={this.handleMouseLeave.bind(this)}
-              />
-              );
+            />);
         });
       });
     }

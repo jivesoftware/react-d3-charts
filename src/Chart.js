@@ -68,7 +68,7 @@ class Chart extends Component {
       const align = _.isString(this.props.legend.align) ? this.props.legend.align : 'left';
       const position = _.isString(this.props.legend.position) ? this.props.legend.position : 'bottom';
 
-      switch(align.toLowerCase()){
+      switch (align.toLowerCase()){
         case 'right':
           legendX = (this.props.width - this.props.margin.right) - bbox.width;
           break;
@@ -81,7 +81,7 @@ class Chart extends Component {
           break;
       }//end switch
 
-      switch(position){
+      switch (position){
         case 'top':
           legendY = this.props.margin.top;
           break;

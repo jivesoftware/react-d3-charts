@@ -187,7 +187,7 @@ class NodeChart extends Component {
 
   _buildTree(props){
     if (!props){
-      return;
+      return {};
     }
 
     const innerWidth = props.width - props.margin.left - props.margin.right;
@@ -222,7 +222,7 @@ class NodeChart extends Component {
       nodes[0].radius = scaleRadius ? scaleRadius(nodes[0].value) : props.defaultNodeRadius;
 
       //distribute the around the center like the hours on a clock
-      for(i = 1; i < len; ++i){
+      for (i = 1; i < len; ++i){
         if (((i-1) % 12) === 0){
           //distribute the next go round with a shorter radius
           chartRadius = Math.max(0, chartRadius) - (chartRadius * 0.25) - props.innerNodeOffset;
