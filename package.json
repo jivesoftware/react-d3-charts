@@ -15,7 +15,7 @@
     "url": "git+https://github.com/jivesoftware/react-d3-charts.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "http://nexus-int.eng.jiveland.com/content/repositories/npm-internal"
   },
   "keywords": [
     "react",

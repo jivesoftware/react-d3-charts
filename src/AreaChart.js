@@ -6,7 +6,6 @@ import Axis from './Axis';
 import Path from './Path';
 import Tooltip from './Tooltip';
 import * as helpers from './helpers.js';
-//import _ from 'lodash';
 
 class AreaChart extends Component {
 
@@ -176,36 +175,33 @@ class AreaChart extends Component {
 
     const areas = data.map((stack, index) => {
       return (
-          <Path
-          key={`${label(stack)}.${index}`}
-          className='area'
-          stroke='none'
-          fill={colorScale(label(stack))}
-          d={area(values(stack))}
-          onMouseMove={this.handleMouseMove.bind(this)}
-          onMouseLeave={this.handleMouseLeave.bind(this)}
-          data={data}
-          />
-          );
+        <Path key={`${label(stack)}.${index}`}
+              className='area'
+              stroke='none'
+              fill={colorScale(label(stack))}
+              d={area(values(stack))}
+              onMouseMove={this.handleMouseMove.bind(this)}
+              onMouseLeave={this.handleMouseLeave.bind(this)}
+              data={data}
+        />
+      );
     });
 
     data.map(stack => {
       return (
-          <Path
-          className='line'
-          d={line(values(stack))}
-          stroke={stroke(label(stack))}
-          data={data}
-          />
-          );
+        <Path className='line'
+              d={line(values(stack))}
+              stroke={stroke(label(stack))}
+              data={data}
+        />);
     });
 
     return (
       <div>
         <Chart className={ this.props.className } height={height} width={width} margin={margin} legend={legend}>
           <g>{areas}</g>
-          <Axis className={"x axis"} orientation={"bottom"} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
-          <Axis className={"y axis"} orientation={"left"} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
+          <Axis className={'x axis'} orientation={'bottom'} scale={xScale} height={innerHeight} width={innerWidth} {...xAxis} />
+          <Axis className={'y axis'} orientation={'left'} scale={yScale} height={innerHeight} width={innerWidth} {...yAxis} />
           { this.props.children }
         </Chart>
         <Tooltip {...this.state.tooltip} className={ this.props.tooltipClassName } />

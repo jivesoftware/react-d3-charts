@@ -82,7 +82,7 @@ class Axis extends Component {
     } = this.props;
 
     if (!visible) {
-      return <g></g>;
+      return <g />;
     }
 
     let ticks;
@@ -118,7 +118,7 @@ class Axis extends Component {
 
     let transform, x, y, x2, y2, dy, textAnchor, d, labelElement;
     if (orientation === 'bottom' || orientation === 'top') {
-      transform = `translate({}, 0)`;
+      transform = 'translate({}, 0)';
       x = 0;
       y = sign * tickSpacing;
       x2 = 0;
@@ -127,9 +127,9 @@ class Axis extends Component {
       textAnchor = 'middle';
       d = `M${range[0]}, ${sign * outerTickSize}V0H${range[1]}V${sign * outerTickSize}`;
 
-      labelElement = <text className={`${className} label`} textAnchor={"end"} x={width} y={-6}>{label}</text>;
+      labelElement = <text className={`${className} label`} textAnchor={'end'} x={width} y={-6}>{label}</text>;
     } else {
-      transform = `translate(0, {})`;
+      transform = 'translate(0, {})';
       x = sign * tickSpacing;
       y = 0;
       x2 = gridLines ? width : (sign * innerTickSize);
@@ -138,7 +138,7 @@ class Axis extends Component {
       textAnchor = sign < 0 ? 'end' : 'start';
       d = `M${sign * outerTickSize}, ${range[0]}H0V${range[1]}H${sign * outerTickSize}`;
 
-      labelElement = <text className={`${className} label`} textAnchor={"end"} y={6} dy={".75em"} transform={"rotate(-90)"}>{label}</text>;
+      labelElement = <text className={`${className} label`} textAnchor={'end'} y={6} dy={'.75em'} transform={'rotate(-90)'}>{label}</text>;
     }
 
     const tickElements = _.compact(ticks.map((tick, index) => {
@@ -152,7 +152,7 @@ class Axis extends Component {
         if (staggerLabels){
           offset = 20;
         }
-      }else {
+      } else {
         tickClasses.push('odd');
       }
 
@@ -165,12 +165,12 @@ class Axis extends Component {
         }
       }
       return (
-          <g key={`${tick}.${index}`} className={ tickClasses.join(' ') } transform={translate}>
+        <g key={`${tick}.${index}`} className={ tickClasses.join(' ') } transform={translate}>
           <line x2={x2} y2={y2 + offset} stroke='#aaa'/>
           <text x={x} y={y + offset} dy={dy} textAnchor={textAnchor}>
           {tickFormatter(tick)}</text>
-          </g>
-          );
+        </g>
+      );
     }));
 
     const pathElement = <path className='domain' d={d} fill='none' stroke='#aaa'/>;
@@ -178,13 +178,13 @@ class Axis extends Component {
     const axisBackground = <rect className='axis-background' fill='none'/>;
 
     return (
-        <g ref='axis' className={className} transform={this._getTranslateString()} style={{shapeRendering: 'crispEdges'}}>
+      <g ref='axis' className={className} transform={this._getTranslateString()} style={{shapeRendering: 'crispEdges'}}>
         {axisBackground}
         {tickElements}
         {pathElement}
         {labelElement}
-        </g>
-        );
+      </g>
+    );
   }
 
   _d3ScaleExtent(domain) {
