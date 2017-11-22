@@ -112,11 +112,12 @@ class NodeChart extends Component {
     this._setupDrag();
   }
 
-  _radial(center, radius, scaleRadius){
+  _radial(center, radius, scaleRadius, len){
     return function(node, index){
       const D2R = Math.PI / 180;
       const startAngle = 90;
-      const currentAngle = startAngle + (30 * index);
+      const displacement = (len-1)>=12 ? 30 : 360/(len-1);
+      const currentAngle = startAngle + (displacement * index);
       const currentAngleRadians = currentAngle * D2R;
       const radialPoint = {
         x: center.x + radius * Math.cos(currentAngleRadians),
@@ -214,7 +215,7 @@ class NodeChart extends Component {
 
     if (props.layout === 'radial'){
       const len = nodes.length;
-      let radial = this._radial(center, chartRadius, scaleRadius, props.width, props.height);
+      let radial = this._radial(center, chartRadius, scaleRadius, len, props.width, props.height);
 
       //put the first node in the center
       nodes[0].x = center.x;
@@ -226,7 +227,7 @@ class NodeChart extends Component {
         if (((i-1) % 12) === 0){
           //distribute the next go round with a shorter radius
           chartRadius = Math.max(0, chartRadius) - (chartRadius * 0.25) - props.innerNodeOffset;
-          radial = this._radial(center, chartRadius, scaleRadius, props.width, props.height);
+          radial = this._radial(center, chartRadius, scaleRadius, len, props.width, props.height);
         }
         nodes[i].radius = props.defaultNodeRadius;
         radial(nodes[i], i, scaleRadius);
