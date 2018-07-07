@@ -9,13 +9,13 @@ A D3 charting library for React
 * Tests!
 * Demo app
 
-##installation
+## installation
 
 ```shell
 $ npm install react-d3-charts
 ```
 
-##usage
+## usage
 
 Check out the demo
 ```shell
@@ -25,7 +25,7 @@ $ open http://localhost:3000
 
 There also tests that you should probably look at.
 
-##code layout
+## code layout
 The es6 source code is in the /src directory.
 
 The published code is transpiled from /src to the /lib directory by running the build task (see below).
@@ -34,7 +34,7 @@ The build task is automatically called when the module is published (see package
 
 The root index.js imports code from the /lib directory allowing end-users to seamlessly use the module without requiring babel or some other transpiler.
 
-##tasks
+## tasks
 
 run the tests
 ```shell
@@ -51,6 +51,6 @@ build the module for distribution
 $ npm run build
 ```
 
-##resources
+## resources
 * This started out initially as a fork of [react-d3-components](https://github.com/codesuki/react-d3-components)
 * Color sorting provided by [sc-color](https://www.npmjs.com/package/sc-color)
